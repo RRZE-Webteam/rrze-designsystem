@@ -18,10 +18,6 @@ class Main
 
     protected $settings;
 
-    protected $shortcode;
-
-    protected $rights;
-
 
     /**
      * Variablen Werte zuweisen.
@@ -42,7 +38,7 @@ class Main
         add_action('wp_enqueue_scripts', [$this, 'enqueueScripts']);
         add_action('admin_enqueue_scripts', [$this, 'enqueueScripts']);
 
-        $settings = new Settings();
+        $this->settings = new Settings();
     }
 
 
@@ -52,8 +48,8 @@ class Main
     public function enqueueScripts()
     {
         wp_enqueue_script('wp-i18n');
-        wp_enqueue_script('rrze-shorturl', plugins_url('src/rrze-shorturl.js', plugin_basename($this->pluginFile)), array('jquery'), null, true);
-        wp_enqueue_style('rrze-shorturl-css', plugins_url('src/rrze-shorturl.css', plugin_basename($this->pluginFile)));
+        wp_enqueue_script('rrze-designsystem', plugins_url('src/rrze-designsystem.js', plugin_basename($this->pluginFile)), array('jquery'), null, true);
+        wp_enqueue_style('rrze-designsystem-css', plugins_url('src/rrze-designsystem.css', plugin_basename($this->pluginFile)));
     }
 
 
