@@ -34,12 +34,13 @@ class Main
      */
     public function onLoaded()
     {
+        add_action( 'init', [$this, 'code_highlighter_init']);
+
         add_action('enqueue_block_editor_assets', [$this, 'enqueueScripts']);
         add_action('wp_enqueue_scripts', [$this, 'enqueueScripts']);
         add_action('admin_enqueue_scripts', [$this, 'enqueueScripts']);
 
         $this->settings = new Settings();
-        $codehighlighter = new CodeHighlighter();
     }
 
 
@@ -50,9 +51,18 @@ class Main
     {
         wp_enqueue_script('wp-i18n');
         wp_enqueue_script('rrze-designsystem', plugins_url('src/rrze-designsystem.js', plugin_basename($this->pluginFile)), array('jquery'), null, true);
-        wp_enqueue_style('rrze-designsystem-css', plugins_url('src/rrze-designsystem.css', plugin_basename($this->pluginFile)));
+        wp_enqueue_style('rrze-designsystem-css', plugins_url('src/rrze-designsystem.scss', plugin_basename($this->pluginFile)));
+
+        $this->code_highlighter_frontend_assets();
     }
 
+    public function code_highlighter_init() {
+        wp_register_script('code-highlighter-block', plugins_url( 'build/index.js', plugin_basename($this->pluginFile) ), array( 'wp-blocks', 'wp-element', 'wp-editor' ));
+        wp_register_style('highlightjs-style', plugins_url('build/frontend.css', plugin_basename($this->pluginFile)));
+    }
 
+    public function code_highlighter_frontend_assets() {
+        wp_enqueue_script('highlightjs-init', plugins_url('build/frontend.js', plugin_basename($this->pluginFile)), array(), null, true);
+    }
 
 }

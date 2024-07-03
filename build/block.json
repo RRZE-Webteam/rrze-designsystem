@@ -6,7 +6,7 @@
   "version": "0.0.1",
   "description": "A block to show a design system",
   "category": "widgets",
-  "icon": "admin-links",
+  "icon": "admin-appearance",
   "keywords": [
     "design",
     "designsystem"

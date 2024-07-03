@@ -4,7 +4,7 @@
 Plugin Name:     RRZE Designsystem
 Plugin URI:      https://github.com/RRZE-Webteam/rrze-designsystem/
 Description:     Plugin zur Darstellung eines Design Systems in einer WordPress-Instanz  
-Version:         0.0.2
+Version:         0.0.3
 Requires at least: 6.4
 Requires PHP:      8.2
 Author:          RRZE Webteam
@@ -107,7 +107,7 @@ function deactivation()
 
 function rrze_designsystem_init()
 {
-    // register_block_type(__DIR__ . '/build', ['render_callback' => [Settings::class, 'render_url_form']]);
+	register_block_type( __DIR__ . '/build' );
 }
 
 /**
@@ -134,6 +134,6 @@ function loaded()
         $main->onLoaded();
     }
 
-    // add_action('init', __NAMESPACE__ . '\rrze_designsystem_init');
+    add_action('init', __NAMESPACE__ . '\rrze_designsystem_init');
 
 }
