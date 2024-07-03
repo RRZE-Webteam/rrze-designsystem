@@ -1,0 +1,25 @@
+{
+	"description": "Plugin zur Darstellung eines Design Systems in einer WordPress-Instanz",
+	"author": "RRZE Webteam",
+	"license": "GPL-2.0-or-later",
+	"main": "build/index.js",
+	"scripts": {
+		"build": "wp-scripts build --webpack-copy-php",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start --webpack-copy-php"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^26.19.0",
+		"webpack-cli": "^5.1.4"
+	},
+	"dependencies": {
+		"clipboard": "latest",
+		"use-clipboard-copy": "latest",
+		"webpack-dev-middleware": "latest",
+		"jquery": "latest"		
+	}
+}

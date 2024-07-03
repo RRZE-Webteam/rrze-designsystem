@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "create-block/rrze-designsystem",
+  "version": "0.0.1",
+  "title": "Designsystem RRZE",
+  "description": "A block to show a design system",
+  "category": "widgets",
+  "icon": "admin-appearance",
+  "keywords": [
+    "design",
+    "designsystem"
+  ],
+  "textdomain": "rrze-designsystem",
+  "editorScript": "file:./index.js",
+  "supports": {
+    "align": true
+  },
+  "example": {},
+  "attributes": {}
+}
