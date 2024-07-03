@@ -50,15 +50,15 @@ class Main
     public function enqueueScripts()
     {
         wp_enqueue_script('wp-i18n');
-        wp_enqueue_script('rrze-designsystem', plugins_url('src/rrze-designsystem.js', plugin_basename($this->pluginFile)), array('jquery'), null, true);
-        wp_enqueue_style('rrze-designsystem-css', plugins_url('src/rrze-designsystem.scss', plugin_basename($this->pluginFile)));
+        // wp_enqueue_script('rrze-designsystem', plugins_url('src/rrze-designsystem.js', plugin_basename($this->pluginFile)), array('jquery'), null, true);
+        // wp_enqueue_style('rrze-designsystem-css', plugins_url('src/rrze-designsystem.scss', plugin_basename($this->pluginFile)));
 
         $this->code_highlighter_frontend_assets();
     }
 
     public function code_highlighter_init() {
         wp_register_script('code-highlighter-block', plugins_url( 'build/index.js', plugin_basename($this->pluginFile) ), array( 'wp-blocks', 'wp-element', 'wp-editor' ));
-        wp_register_style('highlightjs-style', plugins_url('build/frontend.css', plugin_basename($this->pluginFile)));
+        wp_enqueue_style('highlightjs-style', plugins_url('build/frontend.css', plugin_basename($this->pluginFile)));
     }
 
     public function code_highlighter_frontend_assets() {

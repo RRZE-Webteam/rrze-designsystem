@@ -12,27 +12,31 @@ const Edit = (props) => {
         setAttributes({ alignment: newAlignment === undefined ? 'none' : newAlignment });
     };
 
-    return [
+    return (
         el(
-            BlockControls,
-            { key: 'controls' },
-            el(AlignmentToolbar, {
-                value: alignment,
-                onChange: onChangeAlignment,
-            })
-        ),
-        el(
-            'pre',
-            { style: { textAlign: alignment } },
-            el(RichText, {
-                tagName: 'code',
-                className,
-                onChange: onChangeContent,
-                value: content,
-                placeholder: 'Geben Sie Ihren Code hier ein...',
-            })
+            'div',
+            useBlockProps(),
+            el(
+                BlockControls,
+                { key: 'controls' },
+                el(AlignmentToolbar, {
+                    value: alignment,
+                    onChange: onChangeAlignment,
+                })
+            ),
+            el(
+                'pre',
+                { style: { textAlign: alignment } },
+                el(RichText, {
+                    tagName: 'code',
+                    className,
+                    onChange: onChangeContent,
+                    value: content,
+                    placeholder: 'Enter your code here...',
+                })
+            )
         )
-    ];
+    );
 };
 
 export default Edit;
