@@ -39,6 +39,7 @@ class Main
         add_action('admin_enqueue_scripts', [$this, 'enqueueScripts']);
 
         $this->settings = new Settings();
+        $codehighlighter = new CodeHighlighter();
     }
 
 
