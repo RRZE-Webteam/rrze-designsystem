@@ -1,0 +1,35 @@
+.rrze-designsystem-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.rrze-designsystem-form-field {
+    margin-bottom: 1em;
+}
+
+.rrze-designsystem-form-field label {
+    display: block;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+}
+
+.rrze-designsystem-form-field input,
+.rrze-designsystem-form-field textarea {
+    width: 100%;
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.rrze-designsystem-form-field button {
+    padding: 0.5em 1em;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.rrze-designsystem-form-field button:hover {
+    background-color: #0056b3;
+}

@@ -27,6 +27,8 @@ class RRZEDesignSystem {
         require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'includes/class-block-loader.php';
         require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'includes/class-accordion-block.php';
         require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'includes/class-alert-block.php';
+        require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'includes/class-code-status-block.php';
+        require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'includes/class-form-block.php';
     }
 
     private function init_hooks() {
@@ -45,6 +47,7 @@ class RRZEDesignSystem {
         require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'patterns/accordion-pattern.php';
         require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'patterns/alert-pattern.php';
         require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'patterns/code-status-pattern.php';
+        require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'patterns/form-pattern.php';
     }
 
     public function register_pattern_categories() {
