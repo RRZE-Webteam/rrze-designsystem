@@ -5,6 +5,10 @@ class BlockLoader {
     public static function register_blocks() {
         self::register_block_type( 'accordion', 'class-accordion-block.php' );
         self::register_block_type( 'alert', 'class-alert-block.php' );
+        self::register_block_type( 'codestatus', 'class-codestatus-block.php' );
+        self::register_block_type( 'breakpoint', 'class-breakpoint-block.php' );
+        self::register_block_type( 'form', 'class-form-block.php' );
+        self::register_block_type( 'typography', 'class-typography-block.php' );
     }
 
     private static function register_block_type( $block_name, $class_file ) {

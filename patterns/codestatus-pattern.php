@@ -1,12 +1,12 @@
 <?php
 register_block_pattern(
-    'rrze-designsystem/code-status-pattern',
+    'rrze-designsystem/codestatus-pattern',
     array(
         'title'       => __( 'Code Status Pattern', 'rrze-designsystem' ),
         'description' => _x( 'A pattern for design code status blocks', 'Block pattern description', 'rrze-designsystem' ),
         'content'     => '
-            <!-- wp:group {"className":"code-status"} -->
-            <div class="wp-block-group code-status">
+            <!-- wp:group {"className":"codestatus"} -->
+            <div class="wp-block-group codestatus">
                 <!-- wp:heading {"level":2} -->
                 <h2>Design & Code Status</h2>
                 <!-- /wp:heading -->

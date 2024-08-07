@@ -3,7 +3,6 @@
 class BreakpointBlock {
     public function __construct() {
         add_action('init', array($this, 'register_block'));
-        add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
     }
 
     public function register_block() {
@@ -28,14 +27,9 @@ class BreakpointBlock {
         ));
     }
 
-    public function enqueue_scripts() {
-        wp_enqueue_script('rrze-designsystem-breakpoint-editor-script');
-        wp_enqueue_style('rrze-designsystem-breakpoint-styles');
-    }
-
     public function render_block($attributes, $content) {
         return '<div class="rrze-designsystem-breakpoint">' . $content . '</div>';
     }
 }
 
-new BreakpointBlock();
+// new BreakpointBlock();
