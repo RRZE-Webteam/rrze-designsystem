@@ -1,0 +1,32 @@
+.rrze-designsystem-breakpoint {
+    max-width: 600px;
+    margin: 0 auto;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+}
+
+.rrze-designsystem-breakpoint h1 {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+}
+
+.rrze-designsystem-breakpoint h2 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+}
+
+.rrze-designsystem-breakpoint p {
+    margin-bottom: 1em;
+}
+
+.rrze-designsystem-breakpoint pre {
+    background: #f5f5f5;
+    padding: 1em;
+    border-radius: 4px;
+    overflow: auto;
+}
+
+.rrze-designsystem-breakpoint code {
+    font-family: var(--font-family-monospace);
+}
