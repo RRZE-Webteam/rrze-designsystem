@@ -44,6 +44,7 @@ class RRZEDesignSystem {
     public function register_patterns() {
         require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'patterns/accordion-pattern.php';
         require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'patterns/alert-pattern.php';
+        require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'patterns/code-status-pattern.php';
     }
 
     public function register_pattern_categories() {
