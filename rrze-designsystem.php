@@ -1,139 +1,88 @@
 <?php
-
-/*
-Plugin Name:     RRZE Designsystem
-Plugin URI:      https://github.com/RRZE-Webteam/rrze-designsystem/
-Description:     Plugin zur Darstellung eines Design Systems in einer WordPress-Instanz  
-Version:         0.0.4
-Requires at least: 6.4
-Requires PHP:      8.2
-Author:          RRZE Webteam
-Author URI:      https://blogs.fau.de/webworking/
-License:         GNU General Public License v2
-License URI:     http://www.gnu.org/licenses/gpl-2.0.html
-Domain Path:     /languages
-Text Domain:     rrze-designsystem
- */
-
-namespace RRZE\Designsystem;
-
-defined('ABSPATH') || exit;
-
-require_once 'config/config.php';
-const RRZE_PHP_VERSION = '8.2';
-const RRZE_WP_VERSION = '6.4';
-
-use RRZE\Designsystem\Main;
-
-
-// Automatische Laden von Klassen.
-spl_autoload_register(function ($class) {
-    $prefix = __NAMESPACE__;
-    $base_dir = __DIR__ . '/includes/';
-
-    $len = strlen($prefix);
-    if (strncmp($prefix, $class, $len) !== 0) {
-        return;
-    }
-
-    $relative_class = substr($class, $len);
-    $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
-
-    if (file_exists($file)) {
-        require $file;
-    }
-});
-
-
-// Registriert die Plugin-Funktion, die bei Aktivierung des Plugins ausgeführt werden soll.
-register_activation_hook(__FILE__, __NAMESPACE__ . '\activation');
-// Registriert die Plugin-Funktion, die ausgeführt werden soll, wenn das Plugin deaktiviert wird.
-register_deactivation_hook(__FILE__, __NAMESPACE__ . '\deactivation');
-// Wird aufgerufen, sobald alle aktivierten Plugins geladen wurden.
-add_action('plugins_loaded', __NAMESPACE__ . '\loaded');
-
 /**
- * Einbindung der Sprachdateien.
+ * Plugin Name: RRZE Designsystem
+ * Description: A plugin to add design system components like Accordion and Alert using Gutenberg blocks and patterns.
+ * Version: 1.0.0
+ * Author: Your Name
  */
-function load_textdomain()
-{
-    load_plugin_textdomain('rrze-designsystem', false, sprintf('%s/languages/', dirname(plugin_basename(__FILE__))));
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly.
 }
 
-/**
- * Überprüft die minimal erforderliche PHP- u. WP-Version.
- */
-function system_requirements()
-{
-    $error = '';
-    if (version_compare(PHP_VERSION, RRZE_PHP_VERSION, '<')) {
-        /* Übersetzer: 1: aktuelle PHP-Version, 2: erforderliche PHP-Version */
-        $error = sprintf(__('The server is running PHP version %1$s. The Plugin requires at least PHP version %2$s.', 'rrze-designsystem'), PHP_VERSION, RRZE_PHP_VERSION);
-    } elseif (version_compare($GLOBALS['wp_version'], RRZE_WP_VERSION, '<')) {
-        /* Übersetzer: 1: aktuelle WP-Version, 2: erforderliche WP-Version */
-        $error = sprintf(__('The server is running WordPress version %1$s. The Plugin requires at least WordPress version %2$s.', 'rrze-designsystem'), $GLOBALS['wp_version'], RRZE_WP_VERSION);
-    }
-    return $error;
-}
+class RRZEDesignSystem {
 
-
-/**
- * Wird durchgeführt, nachdem das Plugin aktiviert wurde.
- */
-function activation()
-{
-    // Sprachdateien werden eingebunden.
-    load_textdomain();
-
-    // Überprüft die minimal erforderliche PHP- u. WP-Version.
-    // Wenn die Überprüfung fehlschlägt, dann wird das Plugin automatisch deaktiviert.
-    if ($error = system_requirements()) {
-        deactivate_plugins(plugin_basename(__FILE__), false, true);
-        wp_die($error);
+    public function __construct() {
+        $this->define_constants();
+        $this->includes();
+        $this->init_hooks();
     }
 
-    // Ab hier können die Funktionen hinzugefügt werden,
-    // die bei der Aktivierung des Plugins aufgerufen werden müssen.
-    // Bspw. wp_schedule_event, flush_rewrite_rules, etc.
-}
-
-/**
- * Wird durchgeführt, nachdem das Plugin deaktiviert wurde.
- */
-function deactivation()
-{
-}
-
-
-function rrze_designsystem_init()
-{
-	register_block_type( __DIR__ . '/build' );
-}
-
-/**
- * Wird durchgeführt, nachdem das WP-Grundsystem hochgefahren
- * und alle Plugins eingebunden wurden.
- */
-function loaded()
-{
-    // Sprachdateien werden eingebunden.
-    load_textdomain();
-
-    // Überprüft die minimal erforderliche PHP- u. WP-Version.
-    if ($error = system_requirements()) {
-        include_once ABSPATH . 'wp-admin/includes/plugin.php';
-        $plugin_data = get_plugin_data(__FILE__);
-        $plugin_name = $plugin_data['Name'];
-        $tag = is_network_admin() ? 'network_admin_notices' : 'admin_notices';
-        add_action($tag, function () use ($plugin_name, $error) {
-            printf('<div class="notice notice-error"><p>%1$s: %2$s</p></div>', esc_html($plugin_name), esc_html($error));
-        });
-    } else {
-        // Hauptklasse (Main) wird instanziiert.
-        $main = new Main(__FILE__);
-        $main->onLoaded();
+    private function define_constants() {
+        define( 'RRZE_DESIGNSYSTEM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+        define( 'RRZE_DESIGNSYSTEM_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
     }
 
-    add_action('init', __NAMESPACE__ . '\rrze_designsystem_init');
+    private function includes() {
+        require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'includes/class-block-loader.php';
+        require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'includes/class-accordion-block.php';
+        require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'includes/class-alert-block.php';
+    }
 
+    private function init_hooks() {
+        add_action( 'init', array( $this, 'register_blocks' ) );
+        add_action( 'init', array( $this, 'register_patterns' ) );
+        add_action( 'init', array( $this, 'register_pattern_categories' ) );
+        add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_console_script' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_console_script' ) );
+    }
+
+    public function register_blocks() {
+        BlockLoader::register_blocks();
+    }
+
+    public function register_patterns() {
+        require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'patterns/accordion-pattern.php';
+        require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'patterns/alert-pattern.php';
+    }
+
+    public function register_pattern_categories() {
+        if ( function_exists( 'register_block_pattern_category' ) ) {
+            register_block_pattern_category(
+                'rrze-designsystem',
+                array( 'label' => __( 'RRZE Designsystem', 'rrze-designsystem' ) )
+            );
+        }
+    }
+
+    public function enqueue_console_script() {
+        ?>
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function() {
+                <?php if ( is_block_registered( 'rrze-designsystem/accordion' ) ) : ?>
+                    console.log('Der Block "rrze-designsystem/accordion" ist registriert.');
+                <?php else : ?>
+                    console.log('Der Block "rrze-designsystem/accordion" ist nicht registriert.');
+                <?php endif; ?>
+                
+                <?php if ( is_block_registered( 'rrze-designsystem/alert' ) ) : ?>
+                    console.log('Der Block "rrze-designsystem/alert" ist registriert.');
+                <?php else : ?>
+                    console.log('Der Block "rrze-designsystem/alert" ist nicht registriert.');
+                <?php endif; ?>
+            });
+        </script>
+        <?php
+    }
+}
+
+new RRZEDesignSystem();
+
+function is_block_registered( $block_name ) {
+    if ( ! function_exists( 'register_block_type' ) ) {
+        return false;
+    }
+
+    $registry = WP_Block_Type_Registry::get_instance();
+    return $registry->is_registered( $block_name );
 }

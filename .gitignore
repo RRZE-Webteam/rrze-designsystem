@@ -1,4 +1,2 @@
 
-.DS_Store
-.vscode/sftp.json
-/node_modules
+assets/.DS_Store
