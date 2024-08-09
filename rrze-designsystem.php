@@ -2,7 +2,7 @@
 /**
  * Plugin Name: RRZE Designsystem
  * Description: A plugin to add design system components like Accordion and Alert using Gutenberg blocks and patterns.
- * Version: 0.1.3
+ * Version: 0.1.4
  * Author: Your Name
  */
 
@@ -25,6 +25,7 @@ class RRZEDesignSystem {
 
     private function includes() {
         require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'includes/CPT.php';
+        require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'includes/Shortcode.php';
         require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'includes/class-accordion-block.php';
         require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'includes/class-alert-block.php';
         require_once RRZE_DESIGNSYSTEM_PLUGIN_DIR . 'includes/class-breakpoint-block.php';

@@ -31,4 +31,5 @@ jQuery(document).ready(function($) {
         var selected_tab = $(this).attr('href');
         $(selected_tab).show();
     });
+    
 });
