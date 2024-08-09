@@ -8,65 +8,98 @@ if (!defined('ABSPATH')) {
 
 class CPT
 {
-    const POST_TYPE = 'token';
     const TEXT_DOMAIN = 'rrze-designsystem';
 
     public function __construct()
     {
-        add_action('init', [$this, 'register_post_type']);
+        add_action('init', [$this, 'register_post_types']);
         add_action('add_meta_boxes', [$this, 'register_meta_boxes']);
         add_action('save_post', [$this, 'save_meta_boxes']);
+        add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_scripts']);
     }
 
-    public function register_post_type()
+    public function register_post_types()
     {
         try {
-            $labels = [
-                'name'                  => __('Tokens', self::TEXT_DOMAIN),
-                'singular_name'         => __('Token', self::TEXT_DOMAIN),
-                'menu_name'             => __('Tokens', self::TEXT_DOMAIN),
-                'name_admin_bar'        => __('Token', self::TEXT_DOMAIN),
-                'add_new'               => __('Add New', self::TEXT_DOMAIN),
-                'add_new_item'          => __('Add New Token', self::TEXT_DOMAIN),
-                'new_item'              => __('New Token', self::TEXT_DOMAIN),
-                'edit_item'             => __('Edit Token', self::TEXT_DOMAIN),
-                'view_item'             => __('View Token', self::TEXT_DOMAIN),
-                'all_items'             => __('All Tokens', self::TEXT_DOMAIN),
-                'search_items'          => __('Search Tokens', self::TEXT_DOMAIN),
-                'parent_item_colon'     => __('Parent Tokens:', self::TEXT_DOMAIN),
-                'not_found'             => __('No Tokens found.', self::TEXT_DOMAIN),
-                'not_found_in_trash'    => __('No Tokens found in Trash.', self::TEXT_DOMAIN),
-            ];
+            // Register CPT "token"
+            $this->register_post_type_token();
 
-            $args = [
-                'labels'                => $labels,
-                'public'                => true,
-                'publicly_queryable'    => true,
-                'show_ui'               => true,
-                'show_in_menu'          => true,
-                'query_var'             => true,
-                'rewrite'               => ['slug' => 'token'],
-                'capability_type'       => 'post',
-                'has_archive'           => true,
-                'hierarchical'          => false,
-                'menu_position'         => null,
-                'supports'              => ['title', 'editor', 'thumbnail'],
-            ];
-
-            register_post_type(self::POST_TYPE, $args);
+            // Register CPT "component"
+            $this->register_post_type_component();
         } catch (\Exception $e) {
-            error_log('Error registering post type: ' . $e->getMessage());
+            error_log('Error registering post types: ' . $e->getMessage());
         }
+    }
+
+    private function register_post_type_token()
+    {
+        $labels = [
+            'name'                  => __('Tokens', self::TEXT_DOMAIN),
+            'singular_name'         => __('Token', self::TEXT_DOMAIN),
+            'menu_name'             => __('Tokens', self::TEXT_DOMAIN),
+            'add_new_item'          => __('Add New Token', self::TEXT_DOMAIN),
+            'edit_item'             => __('Edit Token', self::TEXT_DOMAIN),
+            'view_item'             => __('View Token', self::TEXT_DOMAIN),
+            'all_items'             => __('All Tokens', self::TEXT_DOMAIN),
+        ];
+
+        $args = [
+            'labels'                => $labels,
+            'public'                => true,
+            'show_ui'               => true,
+            'show_in_menu'          => true,
+            'capability_type'       => 'post',
+            'has_archive'           => true,
+            'supports'              => ['title'],
+        ];
+
+        register_post_type('token', $args);
+    }
+
+    private function register_post_type_component()
+    {
+        $labels = [
+            'name'                  => __('Components', self::TEXT_DOMAIN),
+            'singular_name'         => __('Component', self::TEXT_DOMAIN),
+            'menu_name'             => __('Components', self::TEXT_DOMAIN),
+            'add_new_item'          => __('Add New Component', self::TEXT_DOMAIN),
+            'edit_item'             => __('Edit Component', self::TEXT_DOMAIN),
+            'view_item'             => __('View Component', self::TEXT_DOMAIN),
+            'all_items'             => __('All Components', self::TEXT_DOMAIN),
+        ];
+
+        $args = [
+            'labels'                => $labels,
+            'public'                => true,
+            'show_ui'               => true,
+            'show_in_menu'          => true,
+            'capability_type'       => 'post',
+            'has_archive'           => true,
+            'supports'              => ['title', 'editor'],
+        ];
+
+        register_post_type('component', $args);
     }
 
     public function register_meta_boxes()
     {
         try {
+            // Meta Box für Token
             add_meta_box(
                 'token_meta_box',
                 __('Token Details', self::TEXT_DOMAIN),
-                [$this, 'render_meta_box'],
-                self::POST_TYPE,
+                [$this, 'render_token_meta_box'],
+                'token',
+                'normal',
+                'high'
+            );
+
+            // Meta Box für Component
+            add_meta_box(
+                'component_meta_box',
+                __('Component Details', self::TEXT_DOMAIN),
+                [$this, 'render_component_meta_box'],
+                'component',
                 'normal',
                 'high'
             );
@@ -75,7 +108,7 @@ class CPT
         }
     }
 
-    public function render_meta_box($post)
+    public function render_token_meta_box($post)
     {
         wp_nonce_field(basename(__FILE__), 'token_meta_box_nonce');
 
@@ -118,30 +151,121 @@ class CPT
                 <?php endif; ?>
             </div>
         </p>
-        <script>
-            jQuery(document).ready(function($) {
-                var mediaUploader;
+        <?php
+    }
 
-                $('#token_image_button').click(function(e) {
-                    e.preventDefault();
-                    if (mediaUploader) {
-                        mediaUploader.open();
-                        return;
-                    }
-                    mediaUploader = wp.media.frames.file_frame = wp.media({
-                        title: '<?php _e("Choose Image", self::TEXT_DOMAIN); ?>',
-                        button: {
-                            text: '<?php _e("Choose Image", self::TEXT_DOMAIN); ?>'
-                        }, multiple: false });
-                    mediaUploader.on('select', function() {
-                        var attachment = mediaUploader.state().get('selection').first().toJSON();
-                        $('#token_image').val(attachment.id);
-                        $('#token_image_preview').html('<img src="' + attachment.url + '" style="max-width: 100%;" />');
-                    });
-                    mediaUploader.open();
-                });
-            });
-        </script>
+    public function render_component_meta_box($post)
+    {
+        wp_nonce_field(basename(__FILE__), 'component_meta_box_nonce');
+
+        // Allgemein
+        $overview = get_post_meta($post->ID, '_component_overview', true);
+        $example = get_post_meta($post->ID, '_component_example', true);
+        $usecase = get_post_meta($post->ID, '_component_usecase', true);
+        $related_elements = get_post_meta($post->ID, '_component_related_elements', true);
+        $figma_link = get_post_meta($post->ID, '_component_figma_link', true);
+        $html_code = get_post_meta($post->ID, '_component_html_code', true);
+        $css_code = get_post_meta($post->ID, '_component_css_code', true);
+        $css_type = get_post_meta($post->ID, '_component_css_type', true);
+        $js_code = get_post_meta($post->ID, '_component_js_code', true);
+        $codepen_link = get_post_meta($post->ID, '_component_codepen_link', true);
+        $github_link = get_post_meta($post->ID, '_component_github_link', true);
+        $demo_link = get_post_meta($post->ID, '_component_demo_link', true);
+        $download_link = get_post_meta($post->ID, '_component_download_link', true);
+        $other_link = get_post_meta($post->ID, '_component_other_link', true);
+        $other_link_text = get_post_meta($post->ID, '_component_other_link_text', true);
+
+        ?>
+        <nav class="nav-tab-wrapper">
+            <a href="#general" class="nav-tab nav-tab-active"><?php _e('General', self::TEXT_DOMAIN); ?></a>
+            <a href="#style" class="nav-tab"><?php _e('Style', self::TEXT_DOMAIN); ?></a>
+            <a href="#usage" class="nav-tab"><?php _e('Usage', self::TEXT_DOMAIN); ?></a>
+            <a href="#code" class="nav-tab"><?php _e('Code', self::TEXT_DOMAIN); ?></a>
+        </nav>
+
+        <div id="general" class="tab-content">
+            <p>
+                <label for="component_overview"><?php _e('Overview', self::TEXT_DOMAIN); ?></label>
+                <textarea name="component_overview" id="component_overview" class="widefat"><?php echo esc_textarea($overview); ?></textarea>
+            </p>
+            <p>
+                <label for="component_example"><?php _e('Example', self::TEXT_DOMAIN); ?></label>
+                <textarea name="component_example" id="component_example" class="widefat"><?php echo esc_textarea($example); ?></textarea>
+            </p>
+            <p>
+                <label for="component_usecase"><?php _e('Use Case', self::TEXT_DOMAIN); ?></label>
+                <textarea name="component_usecase" id="component_usecase" class="widefat"><?php echo esc_textarea($usecase); ?></textarea>
+            </p>
+            <p>
+                <label for="component_related_elements"><?php _e('Related Elements or Patterns', self::TEXT_DOMAIN); ?></label>
+                <textarea name="component_related_elements" id="component_related_elements" class="widefat"><?php echo esc_textarea($related_elements); ?></textarea>
+            </p>
+            <p>
+                <label for="component_feedback"><?php _e('Feedback', self::TEXT_DOMAIN); ?></label>
+                <div id="component_feedback_widget_area">
+                    <?php dynamic_sidebar('component_feedback_widget'); ?>
+                </div>
+            </p>
+        </div>
+
+        <div id="style" class="tab-content" style="display: none;">
+            <p>
+                <label for="component_figma_link"><?php _e('Figma Link', self::TEXT_DOMAIN); ?></label>
+                <input type="text" name="component_figma_link" id="component_figma_link" value="<?php echo esc_url($figma_link); ?>" class="widefat" />
+            </p>
+            <?php wp_editor($figma_link, 'component_style', ['textarea_name' => 'component_style']); ?>
+        </div>
+
+        <div id="usage" class="tab-content" style="display: none;">
+            <?php wp_editor($related_elements, 'component_usage', ['textarea_name' => 'component_usage']); ?>
+        </div>
+
+        <div id="code" class="tab-content" style="display: none;">
+            <p>
+                <label for="component_html_code"><?php _e('HTML', self::TEXT_DOMAIN); ?></label>
+                <textarea name="component_html_code" id="component_html_code" class="widefat"><?php echo esc_textarea($html_code); ?></textarea>
+            </p>
+            <p>
+                <label for="component_css_code"><?php _e('CSS/SASS', self::TEXT_DOMAIN); ?></label>
+                <textarea name="component_css_code" id="component_css_code" class="widefat"><?php echo esc_textarea($css_code); ?></textarea>
+            </p>
+            <p>
+                <label for="component_css_type"><?php _e('CSS Type', self::TEXT_DOMAIN); ?></label>
+                <select name="component_css_type" id="component_css_type">
+                    <option value="CSS" <?php selected($css_type, 'CSS'); ?>>CSS</option>
+                    <option value="SASS" <?php selected($css_type, 'SASS'); ?>>SASS</option>
+                </select>
+            </p>
+            <p>
+                <label for="component_js_code"><?php _e('JavaScript', self::TEXT_DOMAIN); ?></label>
+                <textarea name="component_js_code" id="component_js_code" class="widefat"><?php echo esc_textarea($js_code); ?></textarea>
+            </p>
+            <p>
+                <label for="component_codepen_link"><?php _e('CodePen Link', self::TEXT_DOMAIN); ?></label>
+                <input type="text" name="component_codepen_link" id="component_codepen_link" value="<?php echo esc_url($codepen_link); ?>" class="widefat" />
+            </p>
+            <p>
+                <label for="component_github_link"><?php _e('GitHub Link', self::TEXT_DOMAIN); ?></label>
+                <input type="text" name="component_github_link" id="component_github_link" value="<?php echo esc_url($github_link); ?>" class="widefat" />
+            </p>
+            <p>
+                <label for="component_demo_link"><?php _e('Demo Link', self::TEXT_DOMAIN); ?></label>
+                <input type="text" name="component_demo_link" id="component_demo_link" value="<?php echo esc_url($demo_link); ?>" class="widefat" />
+            </p>
+            <p>
+                <label for="component_download_link"><?php _e('Download Link', self::TEXT_DOMAIN); ?></label>
+                <input type="text" name="component_download_link" id="component_download_link" value="<?php echo esc_url($download_link); ?>" class="widefat" />
+            </p>
+            <p>
+                <label for="component_other_link"><?php _e('Other Link', self::TEXT_DOMAIN); ?></label>
+                <input type="text" name="component_other_link" id="component_other_link" value="<?php echo esc_url($other_link); ?>" class="widefat" />
+            </p>
+            <p>
+                <label for="component_other_link_text"><?php _e('Other Link Text', self::TEXT_DOMAIN); ?></label>
+                <input type="text" name="component_other_link_text" id="component_other_link_text" value="<?php echo esc_attr($other_link_text); ?>" class="widefat" />
+            </p>
+        </div>
+
         <?php
     }
 
@@ -166,6 +290,21 @@ class CPT
                 '_token_value' => sanitize_text_field($_POST['token_value'] ?? ''),
                 '_token_usecase' => sanitize_text_field($_POST['token_usecase'] ?? ''),
                 '_token_image' => sanitize_text_field($_POST['token_image'] ?? ''),
+                '_component_overview' => sanitize_textarea_field($_POST['component_overview'] ?? ''),
+                '_component_example' => sanitize_textarea_field($_POST['component_example'] ?? ''),
+                '_component_usecase' => sanitize_textarea_field($_POST['component_usecase'] ?? ''),
+                '_component_related_elements' => sanitize_textarea_field($_POST['component_related_elements'] ?? ''),
+                '_component_figma_link' => esc_url_raw($_POST['component_figma_link'] ?? ''),
+                '_component_html_code' => sanitize_textarea_field($_POST['component_html_code'] ?? ''),
+                '_component_css_code' => sanitize_textarea_field($_POST['component_css_code'] ?? ''),
+                '_component_css_type' => sanitize_text_field($_POST['component_css_type'] ?? 'CSS'),
+                '_component_js_code' => sanitize_textarea_field($_POST['component_js_code'] ?? ''),
+                '_component_codepen_link' => esc_url_raw($_POST['component_codepen_link'] ?? ''),
+                '_component_github_link' => esc_url_raw($_POST['component_github_link'] ?? ''),
+                '_component_demo_link' => esc_url_raw($_POST['component_demo_link'] ?? ''),
+                '_component_download_link' => esc_url_raw($_POST['component_download_link'] ?? ''),
+                '_component_other_link' => esc_url_raw($_POST['component_other_link'] ?? ''),
+                '_component_other_link_text' => sanitize_text_field($_POST['component_other_link_text'] ?? ''),
             ];
 
             foreach ($fields as $key => $value) {
@@ -177,6 +316,21 @@ class CPT
             }
         } catch (\Exception $e) {
             error_log('Error saving meta boxes: ' . $e->getMessage());
+        }
+    }
+
+    public function enqueue_admin_scripts($hook_suffix)
+    {
+        global $post_type;
+        if ('token' === $post_type || 'component' === $post_type) {
+            wp_enqueue_media();
+            wp_enqueue_script(
+                'rrze-designsystem-admin',
+                plugin_dir_url(__FILE__) . '../assets/js/admin.js',
+                ['jquery'],
+                null,
+                true
+            );
         }
     }
 }
