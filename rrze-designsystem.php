@@ -2,7 +2,7 @@
 /**
  * Plugin Name: RRZE Designsystem
  * Description: A plugin to add design system components like Accordion and Alert using Gutenberg blocks and patterns.
- * Version: 0.1.2
+ * Version: 0.1.3
  * Author: Your Name
  */
 
