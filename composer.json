@@ -1,0 +1,17 @@
+{
+    "name": "rrze/designsystem",
+    "autoload": {
+        "psr-4": {
+            "RRZE\\Designsystem\\": "includes/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Webteam des RRZE",
+            "email": "webmaster@fau.de"
+        }
+    ],
+    "require": {
+        "cmb2/cmb2": "^2.11"
+    }
+}
