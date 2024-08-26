@@ -2,7 +2,8 @@
     "name": "rrze/designsystem",
     "autoload": {
         "psr-4": {
-            "RRZE\\Designsystem\\": "includes/"
+            "RRZE\\Designsystem\\": "includes/",
+            "RRZE\\Designsystem\\Tokens\\Colorsystem\\": "includes/Tokens/Colorsystem/"
         }
     },
     "authors": [

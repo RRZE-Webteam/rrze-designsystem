@@ -9,11 +9,16 @@ class ComposerStaticInit60dcb3469506f101ed57a15419a43891
     public static $prefixLengthsPsr4 = array (
         'R' => 
         array (
+            'RRZE\\Designsystem\\Tokens\\Colorsystem\\' => 37,
             'RRZE\\Designsystem\\' => 18,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'RRZE\\Designsystem\\Tokens\\Colorsystem\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/includes/Tokens/Colorsystem',
+        ),
         'RRZE\\Designsystem\\' => 
         array (
             0 => __DIR__ . '/../..' . '/includes',

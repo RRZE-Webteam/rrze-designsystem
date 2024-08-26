@@ -1,5 +1,5 @@
 <?php
-namespace RRZE\Designsystem;
+namespace RRZE\Designsystem\Tokens\Typography;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

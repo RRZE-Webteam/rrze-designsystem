@@ -3,7 +3,7 @@
         'name' => 'rrze/designsystem',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'a0c03db17bb8130218ccd0623470ba6f90caa80b',
+        'reference' => '8ad46d32a53a290296b8737e998118af93708f34',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -22,7 +22,7 @@
         'rrze/designsystem' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'a0c03db17bb8130218ccd0623470ba6f90caa80b',
+            'reference' => '8ad46d32a53a290296b8737e998118af93708f34',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

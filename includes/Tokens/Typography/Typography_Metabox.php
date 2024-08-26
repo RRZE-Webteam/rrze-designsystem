@@ -1,5 +1,5 @@
 <?php
-namespace RRZE\Designsystem;
+namespace RRZE\Designsystem\Tokens\Typography;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -49,14 +49,6 @@ class Typography_Metabox {
             'desc' => __( 'Enter the letter-spacing (e.g., 0.05em, 1px)', 'typographysystem' ),
             'id'   => $prefix . 'letter_spacing',
             'type' => 'text',
-        ));
-
-        $cmb->add_field( array(
-            'name' => __( 'Color', 'typographysystem' ),
-            'desc' => __( 'Select the color for the text', 'typographysystem' ),
-            'id'   => $prefix . 'color',
-            'type' => 'colorpicker',
-            'default' => '#000000',
         ));
     }
 }
