@@ -31,3 +31,10 @@ table.rrze-designsystem-opacitys samp{
     /* border-radius: 100%; */
     background-color: #000;
 }
+
+table.rrze-designsystem-lengths samp{
+    height: 2rem;
+    border-bottom: 2px solid #151515;
+    padding: 1rem;
+    display: inline-block;
+}
