@@ -98,6 +98,7 @@ class Main
         new \RRZE\Designsystem\Tokens\Font\Font_Shortcode();
         new \RRZE\Designsystem\Tokens\Space\Space_Shortcode();
         new \RRZE\Designsystem\Tokens\BoxShadow\BoxShadow_Shortcode();
+        new \RRZE\Designsystem\Tokens\Opacity\Opacity_Shortcode();
     }
 
     private function init_hooks()

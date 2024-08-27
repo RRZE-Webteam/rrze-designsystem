@@ -46,7 +46,7 @@ abstract class Base_REST_API
                 $categories = wp_get_post_terms(get_the_ID(), $this->get_taxonomy());
 
                 if (is_wp_error($categories)) {
-                    $formatted_categories = []; // Handle the error, e.g., set to an empty array
+                    $formatted_categories = [];
                 } else {
                     $formatted_categories = array_map(function ($term) {
                         return [
