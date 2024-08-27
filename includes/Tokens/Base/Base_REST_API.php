@@ -42,23 +42,27 @@ abstract class Base_REST_API
         if ($query->have_posts()) {
             while ($query->have_posts()) {
                 $query->the_post();
-
+                
                 $categories = wp_get_post_terms(get_the_ID(), $this->get_taxonomy());
 
-                $formatted_categories = array_map(function ($term) {
-                    return [
-                        'term_id'       => $term->term_id,
-                        'name'          => $term->name,
-                        'slug'          => $term->slug,
-                        'term_group'    => $term->term_group,
-                        'term_taxonomy_id' => $term->term_taxonomy_id,
-                        'taxonomy'      => $term->taxonomy,
-                        'description'   => $term->description,
-                        'parent'        => $term->parent,
-                        'count'         => $term->count,
-                        'filter'        => $term->filter,
-                    ];
-                }, $categories);
+                if (is_wp_error($categories)) {
+                    $formatted_categories = []; // Handle the error, e.g., set to an empty array
+                } else {
+                    $formatted_categories = array_map(function ($term) {
+                        return [
+                            'term_id'       => $term->term_id,
+                            'name'          => $term->name,
+                            'slug'          => $term->slug,
+                            'term_group'    => $term->term_group,
+                            'term_taxonomy_id' => $term->term_taxonomy_id,
+                            'taxonomy'      => $term->taxonomy,
+                            'description'   => $term->description,
+                            'parent'        => $term->parent,
+                            'count'         => $term->count,
+                            'filter'        => $term->filter,
+                        ];
+                    }, $categories);
+                }
 
                 $results[] = [
                     'id'          => get_the_ID(),
