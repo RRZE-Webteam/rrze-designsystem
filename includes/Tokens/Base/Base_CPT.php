@@ -40,15 +40,15 @@ abstract class Base_CPT
             'labels'                => $this->labels,
             'supports'              => ['title'],
             'hierarchical'          => false,
-            'public'                => true,
+            'public'                => false,
             'show_ui'               => true,
             'show_in_menu'          => 'design-tokens',
             'menu_position'         => 5,
             'show_in_admin_bar'     => true,
             'show_in_nav_menus'     => true,
             'can_export'            => true,
-            'has_archive'           => true,
-            'exclude_from_search'   => false,
+            'has_archive'           => false,
+            'exclude_from_search'   => true,
             'publicly_queryable'    => true,
             'capability_type'       => 'post',
             'taxonomies'            => [],
@@ -83,6 +83,7 @@ abstract class Base_CPT
             'desc' => __('Enter the token name', 'rrze-designsystem'),
             'id'   => $prefix . 'token_name',
             'type' => 'text',
+            'sanitization_cb' => 'sanitize_text_field',
         ));
 
         $cmb->add_field(array(
@@ -90,6 +91,7 @@ abstract class Base_CPT
             'desc' => __('Enter the value', 'rrze-designsystem'),
             'id'   => $prefix . 'value',
             'type' => 'text',
+            'sanitization_cb' => 'sanitize_css_value',
         ));
 
         $cmb->add_field(array(
@@ -97,12 +99,30 @@ abstract class Base_CPT
             'desc' => __('Enter the use case', 'rrze-designsystem'),
             'id'   => $prefix . 'use_case',
             'type' => 'text',
+            'sanitization_cb' => 'sanitize_text_field',
         ));
 
         // Individual Fields
         foreach ($this->fields as $field) {
             $cmb->add_field($field);
         }
+    }
+
+    /**
+     * Sanitizes the value of the CSS field to ensure that only valid CSS
+     * 
+     * @param string $value The value to sanitize
+     * @return string
+     */
+    public function sanitize_css_value($value)
+    {
+        $value = wp_strip_all_tags($value);
+
+        if (preg_match('/^(\d+|\d*\.\d+)(px|em|rem|%)?|^rgba?\(\d{1,3},\d{1,3},\d{1,3}(,\d(\.\d+)?)?\)$/i', $value)) {
+            return $value;
+        }
+
+        return '';
     }
 
     /**

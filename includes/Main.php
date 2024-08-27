@@ -3,13 +3,31 @@
 namespace RRZE\Designsystem;
 
 defined('ABSPATH') || exit;
-
 use const rrze\Designsystem\DESIGNSYSTEM_VERSION;
-use RRZE\Designsystem\Tokens\Colorsystem\Colorsystem_REST_API;
-use RRZE\Designsystem\Tokens\Typography\Typography_REST_API;
 
+// CPT Design Token Namespaces
 use RRZE\Designsystem\Tokens\Opacity\Opacity_CPT;
+use RRZE\Designsystem\Tokens\BoxShadow\BoxShadow_CPT;
+use RRZE\Designsystem\Tokens\Border\Border_CPT;
+use RRZE\Designsystem\Tokens\Color\Color_CPT;
+use RRZE\Designsystem\Tokens\Font\Font_CPT;
+use RRZE\Designsystem\Tokens\Icon\Icon_CPT;
+use RRZE\Designsystem\Tokens\Length\Length_CPT;
+use RRZE\Designsystem\Tokens\Space\Space_CPT;
+use RRZE\Designsystem\Tokens\MediaQuery\MediaQuery_CPT;
+use RRZE\Designsystem\Tokens\Breakpoint\Breakpoint_CPT;
+
+// REST API Design Token Namespaces
+use RRZE\Designsystem\Tokens\BoxShadow\BoxShadow_REST_API;
 use RRZE\Designsystem\Tokens\Opacity\Opacity_REST_API;
+use RRZE\Designsystem\Tokens\Border\Border_REST_API;
+use RRZE\Designsystem\Tokens\Breakpoint\Breakpoint_REST_API;
+use RRZE\Designsystem\Tokens\Color\Color_REST_API;
+use RRZE\Designsystem\Tokens\Font\Font_REST_API;
+use RRZE\Designsystem\Tokens\Icon\Icon_REST_API;
+use RRZE\Designsystem\Tokens\Length\Length_REST_API;
+use RRZE\Designsystem\Tokens\MediaQuery\MediaQuery_REST_API;
+use RRZE\Designsystem\Tokens\Space\Space_REST_API;
 
 /**
  * The Brain of the Plugin – Main Class
@@ -26,8 +44,6 @@ class Main
         // add_action('wp_enqueue_scripts', [$this, 'enqueueScripts']);
 
         new Blocks();
-        new Colorsystem_REST_API();
-        new Typography_REST_API();
     }
 
     /**
@@ -68,26 +84,23 @@ class Main
 
         new Opacity_CPT();
         new Opacity_REST_API();
-
-        // Initialize Color Token
-        add_action('init', function () {
-            error_log('Registering CPT...');
-            \RRZE\Designsystem\Tokens\Colorsystem\Colorsystem_CPT::register_cpt();
-        });
-        // Initialize Typography Token
-        add_action('init', function () {
-            error_log('Registering CPT...');
-            \RRZE\Designsystem\Tokens\Typography\Typography_CPT::register_cpt();
-        });
-
-        // Initialize Metaboxes
-        add_action('cmb2_admin_init', function () {
-            error_log('Registering Metaboxes...');
-            \RRZE\Designsystem\Tokens\Colorsystem\Colorsystem_Metabox::register_metaboxes();
-        });
-        add_action('cmb2_admin_init', function () {
-            error_log('Registering Metaboxes...');
-            \RRZE\Designsystem\Tokens\Typography\Typography_Metabox::register_metaboxes();
-        });
+        new BoxShadow_CPT();
+        new BoxShadow_REST_API();
+        new Border_CPT();
+        new Border_REST_API();
+        new Length_CPT();
+        new Length_REST_API();
+        new Space_CPT();
+        new Space_REST_API();
+        new MediaQuery_CPT();
+        new MediaQuery_REST_API();
+        new Font_CPT();
+        new Font_REST_API();
+        new Breakpoint_CPT();
+        new Breakpoint_REST_API();
+        new Color_CPT();
+        new Color_REST_API();
+        new Icon_CPT();
+        new Icon_REST_API();
     }
 }
