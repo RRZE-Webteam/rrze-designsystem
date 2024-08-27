@@ -44,6 +44,7 @@ class Main
         // add_action('wp_enqueue_scripts', [$this, 'enqueueScripts']);
 
         new Blocks();
+        add_action('init', [$this, 'register_rrze_shortcodes']);
     }
 
     /**
@@ -76,6 +77,11 @@ class Main
                 5                                     // Position in the menu
             );
         });
+    }
+
+    public function register_rrze_shortcodes()
+    {
+        new \RRZE\Designsystem\Tokens\Color\Color_Shortcode();
     }
 
     private function init_hooks()

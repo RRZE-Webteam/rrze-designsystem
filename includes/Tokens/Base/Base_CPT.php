@@ -109,7 +109,7 @@ abstract class Base_CPT
     }
 
     /**
-     * Sanitizes the value of the CSS field to ensure that only valid CSS
+     * Sanitizes the value of the CSS field to ensure that only valid CSS is matched
      * 
      * @param string $value The value to sanitize
      * @return string
