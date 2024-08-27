@@ -8,6 +8,8 @@ use const rrze\Designsystem\DESIGNSYSTEM_VERSION;
 use RRZE\Designsystem\Tokens\Colorsystem\Colorsystem_REST_API;
 use RRZE\Designsystem\Tokens\Typography\Typography_REST_API;
 
+use RRZE\Designsystem\Tokens\Opacity\Opacity_CPT;
+use RRZE\Designsystem\Tokens\Opacity\Opacity_REST_API;
 
 /**
  * The Brain of the Plugin – Main Class
@@ -63,6 +65,9 @@ class Main
     private function init_hooks()
     {
         error_log('Initializing hooks...');
+
+        new Opacity_CPT();
+        new Opacity_REST_API();
 
         // Initialize Color Token
         add_action('init', function () {
