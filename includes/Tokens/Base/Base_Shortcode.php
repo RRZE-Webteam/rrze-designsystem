@@ -11,14 +11,20 @@ abstract class Base_Shortcode
     protected $rest_route;
     protected $fields;
     protected $shortcode_tag;
+    protected $style_template;
+    protected $extra_classes;
+    protected $samp_text;
 
-    public function __construct($shortcode_tag, $post_type, $rest_namespace, $rest_route, $fields)
+    public function __construct($shortcode_tag, $post_type, $rest_namespace, $rest_route, $fields, $style_template = '', $extra_classes = [], $samp_text = '')
     {
         $this->shortcode_tag = $shortcode_tag;
         $this->post_type = $post_type;
         $this->rest_namespace = $rest_namespace;
         $this->rest_route = $rest_route;
         $this->fields = $fields;
+        $this->style_template = $style_template;
+        $this->extra_classes = $extra_classes;
+        $this->samp_text = $samp_text;
 
         add_shortcode($this->shortcode_tag, [$this, 'render_shortcode']);
     }
@@ -39,8 +45,24 @@ abstract class Base_Shortcode
             $this->post_type,
             $this->rest_namespace,
             $this->rest_route,
-            $this->fields
+            $this->fields,
+            $this->extra_classes,
+            $this->samp_text
         );
+
+        // Use the style template if provided
+        if (!empty($this->style_template)) {
+            $data = $table_generator->fetch_data();
+            if (!empty($data)) {
+                $styles = $table_generator->generate_dynamic_styles($data, $this->style_template);
+        
+                // Add the styles to the wp_footer action
+                add_action('wp_footer', function () use ($styles) {
+                    echo $styles;
+                }, 99);
+            }
+        }        
+
 
         return $table_generator->generate_table();
     }

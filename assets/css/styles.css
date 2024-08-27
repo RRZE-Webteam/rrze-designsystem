@@ -1,0 +1,12 @@
+table.rrze-designsystem.rrze-designsystem-colors samp{
+    border: 1px solid #000;
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 100%;
+}
+
+table.rrze-designsystem svg{
+    width: 1.5rem;
+    height: 1.5rem;
+}

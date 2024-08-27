@@ -34,6 +34,6 @@ class Font_CPT extends Base_CPT
         $fields = [
         ];
 
-        parent::__construct('color', $labels, $args, $fields);
+        parent::__construct('font', $labels, $args, $fields);
     }
 }

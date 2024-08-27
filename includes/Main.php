@@ -3,7 +3,7 @@
 namespace RRZE\Designsystem;
 
 defined('ABSPATH') || exit;
-use const rrze\Designsystem\DESIGNSYSTEM_VERSION;
+use const RRZE\Designsystem\DESIGNSYSTEM_VERSION;
 
 // CPT Design Token Namespaces
 use RRZE\Designsystem\Tokens\Opacity\Opacity_CPT;
@@ -45,6 +45,7 @@ class Main
 
         new Blocks();
         add_action('init', [$this, 'register_rrze_shortcodes']);
+        add_action('wp_enqueue_scripts', [$this, 'embedFrontendStyles']);
     }
 
     /**
@@ -62,6 +63,18 @@ class Main
         //     [],
         //     DESIGNSYSTEM_VERSION
         // );
+    }
+
+    public function embedFrontendStyles()
+    {
+        wp_register_style(
+            'rrze-designsystem-styles',
+            plugins_url('assets/css/styles.css', plugin_basename($this->pluginFile)),
+            [],
+            DESIGNSYSTEM_VERSION
+        );
+
+        wp_enqueue_style('rrze-designsystem-styles');
     }
 
     public function registerMenuPages()
@@ -82,6 +95,7 @@ class Main
     public function register_rrze_shortcodes()
     {
         new \RRZE\Designsystem\Tokens\Color\Color_Shortcode();
+        new \RRZE\Designsystem\Tokens\Font\Font_Shortcode();
     }
 
     private function init_hooks()

@@ -2,10 +2,10 @@
 
 /*
 Plugin Name:     rrze-designsystem
-Plugin URI:      https://github.com/LN-Webteam/rrze-designsystem
+Plugin URI:      https://github.com/RRZE-Webteam/rrze-designsystem
 Description:     Plugin Description
 Version:         1.0.0
-Author:          LN Webteam
+Author:          RRZE Webteam
 Author URI:      https://blogs.fau.de/webworking/
 License:         GNU General Public License v3
 License URI:     http://www.gnu.org/licenses/gpl-3.0.html
@@ -20,8 +20,8 @@ defined('ABSPATH') || exit('No direct script access allowed');
 
 require_once __DIR__ . '/vendor/autoload.php';
 // Define plugin version requirements.
-const LN_PHP_VERSION = '8.0';
-const LN_WP_VERSION = '6.0';
+const RRZE_PHP_VERSION = '8.0';
+const RRZE_WP_VERSION = '6.0';
 const DESIGNSYSTEM_VERSION = '1.0.0';
 define('COLORSYSTEM_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('COLORSYSTEM_PLUGIN_URL', plugin_dir_url(__FILE__));
@@ -49,10 +49,10 @@ function systemRequirements()
 {
     $error = '';
 
-    if (version_compare(PHP_VERSION, LN_PHP_VERSION, '<')) {
-        $error = sprintf(__('The server is running PHP version %1$s. The Plugin requires at least PHP version %2$s.', 'rrze-designsystem'), PHP_VERSION, LN_PHP_VERSION);
-    } elseif (version_compare($GLOBALS['wp_version'], LN_WP_VERSION, '<')) {
-        $error = sprintf(__('The server is running WordPress version %1$s. The Plugin requires at least WordPress version %2$s.', 'rrze-designsystem'), $GLOBALS['wp_version'], LN_WP_VERSION);
+    if (version_compare(PHP_VERSION, RRZE_PHP_VERSION, '<')) {
+        $error = sprintf(__('The server is running PHP version %1$s. The Plugin requires at least PHP version %2$s.', 'rrze-designsystem'), PHP_VERSION, RRZE_PHP_VERSION);
+    } elseif (version_compare($GLOBALS['wp_version'], RRZE_WP_VERSION, '<')) {
+        $error = sprintf(__('The server is running WordPress version %1$s. The Plugin requires at least WordPress version %2$s.', 'rrze-designsystem'), $GLOBALS['wp_version'], RRZE_WP_VERSION);
     }
 
     return $error;
