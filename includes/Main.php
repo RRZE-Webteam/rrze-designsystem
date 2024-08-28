@@ -41,7 +41,7 @@ class Main
         $this->pluginFile = $pluginFile;
         $this->init_hooks();
         $this->registerMenuPages();
-        // add_action('wp_enqueue_scripts', [$this, 'enqueueScripts']);
+        add_action('wp_enqueue_scripts', [$this, 'registerScripts']);
 
         new Blocks();
         add_action('init', [$this, 'register_rrze_shortcodes']);
@@ -57,12 +57,12 @@ class Main
     {
         // USE THE SECTION FOR EMBEDDING FRONTEND SCRIPTS
         // Example Embed:
-        // wp_register_script(
-        //     'rrze-gsap',
-        //     plugins_url('assets/js/gsap/gsap.min.js', plugin_basename($this->pluginFile)),
-        //     [],
-        //     DESIGNSYSTEM_VERSION
-        // );
+        wp_register_script(
+            'rrze-copy-to-clipboard',
+            plugins_url('assets/js/copy.js', plugin_basename($this->pluginFile)),
+            [],
+            DESIGNSYSTEM_VERSION
+        );
     }
 
     public function embedFrontendStyles()
