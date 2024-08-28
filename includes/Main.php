@@ -100,6 +100,10 @@ class Main
         new \RRZE\Designsystem\Tokens\BoxShadow\BoxShadow_Shortcode();
         new \RRZE\Designsystem\Tokens\Opacity\Opacity_Shortcode();
         new \RRZE\Designsystem\Tokens\Length\Length_Shortcode();
+        new \RRZE\Designsystem\Tokens\Breakpoint\Breakpoint_Shortcode();
+        new \RRZE\Designsystem\Tokens\MediaQuery\MediaQuery_Shortcode();
+        new \RRZE\Designsystem\Tokens\Border\Border_Shortcode();
+        new \RRZE\Designsystem\Tokens\Icon\Icon_Shortcode();
     }
 
     private function init_hooks()

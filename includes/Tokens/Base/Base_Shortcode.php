@@ -37,8 +37,13 @@ abstract class Base_Shortcode
      */
     public function render_shortcode($atts)
     {
-        // Optionally process the shortcode attributes here if needed
-        $atts = shortcode_atts([], $atts, $this->shortcode_tag);
+        $atts = shortcode_atts(
+            [
+                'category' => '',
+            ],
+            $atts,
+            $this->shortcode_tag
+        );
 
         // Create an instance of the CPT_Table_Generator and generate the table
         $table_generator = new \RRZE\Designsystem\Tokens\Base\CPT_Table_Generator(
@@ -50,18 +55,23 @@ abstract class Base_Shortcode
             $this->samp_text
         );
 
+        // Pass categories to the table generator if provided
+        if (!empty($atts['category'])) {
+            $table_generator->set_categories(explode(',', $atts['category']));
+        }
+
         // Use the style template if provided
         if (!empty($this->style_template)) {
             $data = $table_generator->fetch_data();
             if (!empty($data)) {
                 $styles = $table_generator->generate_dynamic_styles($data, $this->style_template);
-        
+
                 // Add the styles to the wp_footer action
                 add_action('wp_footer', function () use ($styles) {
                     echo $styles;
                 }, 99);
             }
-        }        
+        }
 
 
         return $table_generator->generate_table();

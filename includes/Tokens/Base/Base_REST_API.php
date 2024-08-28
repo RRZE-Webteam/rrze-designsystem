@@ -30,11 +30,23 @@ abstract class Base_REST_API
 
     public function get_data($data)
     {
+        $categories = isset($data['categories']) ? explode(',', sanitize_text_field($data['categories'])) : [];
+
         $args = [
             'post_type'      => $this->post_type,
             'posts_per_page' => -1,
             'post_status'    => 'publish',
         ];
+
+        if (!empty($categories)) {
+            $args['tax_query'] = [
+                [
+                    'taxonomy' => $this->get_taxonomy(),
+                    'field'    => 'slug',
+                    'terms'    => $categories,
+                ]
+            ];
+        }
 
         $query = new \WP_Query($args);
         $results = [];
@@ -42,7 +54,7 @@ abstract class Base_REST_API
         if ($query->have_posts()) {
             while ($query->have_posts()) {
                 $query->the_post();
-                
+
                 $categories = wp_get_post_terms(get_the_ID(), $this->get_taxonomy());
 
                 if (is_wp_error($categories)) {

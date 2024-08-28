@@ -12,6 +12,7 @@ class CPT_Table_Generator
     protected $fields;
     protected $extra_classes;
     protected $samp_text;
+    protected $categories = [];
 
     public function __construct($post_type, $rest_namespace, $rest_route, $fields, $extra_classes = [], $samp_text = '')
     {
@@ -19,11 +20,22 @@ class CPT_Table_Generator
         $this->rest_namespace = $rest_namespace;
         $this->rest_route = $rest_route;
         $this->fields = $fields;
-        $this->extra_classes = $extra_classes;
-        $this->samp_text = $samp_text;
+        $this->extra_classes = is_array($extra_classes) ? $extra_classes : [];
+        $this->samp_text = is_string($samp_text) ? $samp_text : '';
     }
 
-/**
+    /**
+     * Setter for categories passed to the table generator.
+     *
+     * @param [type] $categories
+     * @return void
+     */
+    public function set_categories($categories)
+    {
+        $this->categories = $categories;
+    }
+
+    /**
      * Generate the complete table HTML.
      *
      * @return string The complete table HTML.
@@ -52,13 +64,13 @@ class CPT_Table_Generator
     protected function generate_table_head()
     {
         $head = '<thead><tr>';
-        $head .= '<th scope="col" data-label="Example"><abbr title="Example">Ex.</abbr></th>'; // For the example color box
+        $head .= '<th scope="col" data-label="Example"><abbr title="Example">Ex.</abbr></th>';
         foreach ($this->fields as $field) {
             $label = $field['label'];
             $abbr = $field['abbr'] ?? $label;
             $head .= "<th scope='col' data-label='{$label}'><abbr title='{$label}'>{$abbr}</abbr></th>";
         }
-        $head .= '<th scope="col" data-label="Copy"></th>'; // For the Copy button
+        $head .= '<th scope="col" data-label="Copy"></th>';
         $head .= '</tr></thead>';
         return $head;
     }
@@ -144,12 +156,42 @@ class CPT_Table_Generator
      */
     public function fetch_data()
     {
-        $response = wp_remote_get(rest_url("{$this->rest_namespace}/{$this->rest_route}"));
-        if (is_wp_error($response)) {
-            return [];
+        // Prepare query args
+        $query_args = [
+            'post_type' => $this->post_type,
+            'posts_per_page' => -1,
+            'post_status' => 'publish',
+        ];
+
+        if (!empty($this->categories)) {
+            $query_args['tax_query'] = [
+                [
+                    'taxonomy' => $this->post_type . '_category',
+                    'field'    => 'slug',
+                    'terms'    => $this->categories,
+                ]
+            ];
         }
 
-        $data = wp_remote_retrieve_body($response);
-        return json_decode($data, true);
+        // Fetch posts using WP_Query
+        $query = new \WP_Query($query_args);
+        $results = [];
+
+        if ($query->have_posts()) {
+            while ($query->have_posts()) {
+                $query->the_post();
+
+                $results[] = [
+                    'id'         => get_the_ID(),
+                    'title'      => get_the_title(),
+                    'token_name' => get_post_meta(get_the_ID(), $this->post_type . '_token_name', true),
+                    'value'      => get_post_meta(get_the_ID(), $this->post_type . '_value', true),
+                    'use_case'   => get_post_meta(get_the_ID(), $this->post_type . '_use_case', true),
+                ];
+            }
+            wp_reset_postdata();
+        }
+
+        return $results;
     }
 }
