@@ -106,6 +106,7 @@ class Main
         new \RRZE\Designsystem\Tokens\MediaQuery\MediaQuery_Shortcode();
         new \RRZE\Designsystem\Tokens\Border\Border_Shortcode();
         new \RRZE\Designsystem\Tokens\Icon\Icon_Shortcode();
+        new \RRZE\Designsystem\Elements\Elements_Shortcode();
     }
 
     private function init_hooks()

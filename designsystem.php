@@ -95,18 +95,6 @@ function loaded()
             require_once __DIR__ . '/vendor/cmb2/cmb2/init.php';
         }
 
-        new Main(__FILE__);
-
-        add_filter('template_include', function ($template) {
-            if (is_singular('elements')) {
-                $plugin_template = plugin_dir_path(__FILE__) . 'templates/single-elements.php';
-    
-                if (file_exists($plugin_template)) {
-                    return $plugin_template;
-                }
-            }
-            return $template;
-        });
-        
+        new Main(__FILE__); 
     }
 }

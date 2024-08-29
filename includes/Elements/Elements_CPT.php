@@ -29,7 +29,7 @@ class Elements_CPT extends Base_CPT
         ];
 
         $args = [
-            'supports'              => ['title', 'editor', 'page-attributes'],
+            'supports'              => ['title', 'editor'],
             'public'                => true,
             'show_ui'               => true,
             'show_in_menu'          => true,
@@ -37,11 +37,11 @@ class Elements_CPT extends Base_CPT
             'show_in_admin_bar'     => true,
             'show_in_nav_menus'     => true,
             'can_export'            => true,
-            'has_archive'           => true,
+            'has_archive'           => false,
             'exclude_from_search'   => false,
             'publicly_queryable'    => true,
             'rewrite'               => ['slug' => 'elements'],
-            'hierarchical'          => true, // Allows for nested pages
+            'hierarchical'          => false,
             'show_in_rest'          => true,
         ];
 
