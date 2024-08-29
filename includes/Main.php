@@ -6,6 +6,8 @@ defined('ABSPATH') || exit;
 use const RRZE\Designsystem\DESIGNSYSTEM_VERSION;
 
 // CPT Design Token Namespaces
+
+use RRZE\Designsystem\Elements\Elements_CPT;
 use RRZE\Designsystem\Tokens\Opacity\Opacity_CPT;
 use RRZE\Designsystem\Tokens\BoxShadow\BoxShadow_CPT;
 use RRZE\Designsystem\Tokens\Border\Border_CPT;
@@ -109,6 +111,7 @@ class Main
     private function init_hooks()
     {
         error_log('Initializing hooks...');
+        new Elements_CPT();
 
         new Opacity_CPT();
         new Opacity_REST_API();
