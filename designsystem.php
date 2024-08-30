@@ -4,7 +4,7 @@
 Plugin Name:     rrze-designsystem
 Plugin URI:      https://github.com/RRZE-Webteam/rrze-designsystem
 Description:     Plugin Description
-Version:         1.0.0
+Version:         0.0.1
 Author:          RRZE Webteam
 Author URI:      https://blogs.fau.de/webworking/
 License:         GNU General Public License v3
