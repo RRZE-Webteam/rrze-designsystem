@@ -29,7 +29,7 @@ class Elements_CPT extends Base_CPT
         ];
 
         $args = [
-            'supports'              => ['title', 'editor'],
+            'supports'              => ['title'],
             'public'                => true,
             'show_ui'               => true,
             'show_in_menu'          => true,
