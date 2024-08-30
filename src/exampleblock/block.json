@@ -1,0 +1,97 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "rrze/rrze-designsystem",
+  "version": "1.0.0",
+  "title": "example",
+  "category": "text",
+  "description": "Creates an Example block.",
+  "attributes": {
+    "style": {
+      "type": "string",
+      "default": "default"
+    },
+    "color": {
+      "type": "string",
+      "default": "#e9edf2"
+    },
+    "border_color": {
+      "type": "string",
+      "default": ""
+    },
+    "title": {
+      "type": "string",
+      "default": ""
+    },
+    "textColor": {
+      "type": "string",
+      "default": "#000000"
+    },
+    "borderColor": {
+      "type": "string",
+      "default": ""
+    },
+    "selectedCategories": {
+      "type": "object",
+      "default": {}
+    },
+    "groupedColors": {
+      "type": "object",
+      "default": {}
+    }
+  },
+  "example": {
+    "attributes": {
+      "style": "success",
+      "color": "#e9edf2",
+      "border_color": "",
+      "title": "Alert",
+      "textColor": "#000000",
+      "borderColor": "",
+      "selectedCategories": {
+        "Primary Colors": true,
+        "Secondary Colors": true
+      },
+      "groupedColors": {
+        "Primary Colors": [
+          {
+            "id": 1,
+            "title": "Red",
+            "hex_value": "#FF0000",
+            "color_name": "Red",
+            "color_type": "primary",
+            "category": [
+              {
+                "term_id": 1,
+                "name": "Primary Colors",
+                "slug": "primary-colors",
+                "term_group": 0,
+                "term_taxonomy_id": 1,
+                "taxonomy": "category",
+                "description": "",
+                "parent": 0,
+                "count": 1,
+                "filter": "raw"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "innerBlocks": [
+      {
+        "name": "core/paragraph",
+        "attributes": {
+          "content": "This is an alert box."
+        }
+      }
+    ]
+  },
+  "supports": {
+    "html": false
+  },
+  "textdomain": "lukasniebler-elements-b",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

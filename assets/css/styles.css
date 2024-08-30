@@ -1,0 +1,115 @@
+table.rrze-designsystem.rrze-designsystem-colors samp{
+    border: 1px solid #000;
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 100%;
+}
+
+table.rrze-designsystem svg{
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+table.rrze-designsystem-spaces samp{
+    border: 1.5px dashed #04316a;
+    display: inline-block;
+    background-color: #dfdfdf
+}
+
+table.rrze-designsystem-boxshadows samp{
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 4px;
+}
+
+table.rrze-designsystem-opacitys samp{
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    /* border-radius: 100%; */
+    background-color: #000;
+}
+
+table.rrze-designsystem-lengths samp{
+    height: 2rem;
+    border-bottom: 2px solid #151515;
+    padding: 1rem;
+    display: inline-block;
+}
+
+table.rrze-designsystem-lengths tr:hover samp{
+    border-color: #fff;
+}
+
+table.rrze-designsystem-borders samp{
+    height: 2rem;
+    width: 4rem;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+table.rrze-designsystem-borders tr:hover samp{
+    border-color: #fff;
+}
+
+table.rrze-designsystem td[data-label="Copy"]{
+    width: 3rem;
+}
+
+table.rrze-designsystem tr:hover, table.rrze-designsystem tr:nth-child(odd):hover td, table.rrze-designsystem tr:hover td{
+    background: #04316a !important;
+    color: #fff !important;
+}
+
+table.rrze-designsystem tr:hover code {
+    background-color: #fff;
+}
+
+table.rrze-designsystem tr:hover svg {
+    fill: #fff;
+}
+
+table.rrze-designsystem tr td {
+    background: none !important;
+}
+
+table.rrze-designsystem thead tr th{
+    background: #04316a !important;
+    color: #fff;
+}
+
+rrze-copy-button, table.rrze-designsystem tr td code {
+    cursor: pointer;
+}
+
+/* Tooltip Container */
+.copy-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Tooltip Text */
+[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 1;
+}
+
+/* Tooltip visibility on hover */
+[data-tooltip]:hover::after {
+    opacity: 1;
+}
