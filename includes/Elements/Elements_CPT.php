@@ -46,8 +46,9 @@ class Elements_CPT extends Base_CPT
         ];
 
         $fields = $this->define_fields();
+        $hide_default_fields = true;
 
-        parent::__construct($post_type, $labels, $args, $fields);
+        parent::__construct($post_type, $labels, $args, $fields, $hide_default_fields);
     }
 
     /**

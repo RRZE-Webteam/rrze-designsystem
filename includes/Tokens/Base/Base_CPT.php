@@ -10,13 +10,16 @@ abstract class Base_CPT
     protected $labels;
     protected $args;
     protected $fields;
+    protected $hide_default_fields;
 
-    public function __construct($post_type, $labels, $args = [], $fields = [])
+    public function __construct($post_type, $labels, $args = [], $fields = [], $hide_default_fields = false)
     {
         $this->post_type = $post_type;
         $this->labels = $labels;
         $this->args = $args;
         $this->fields = $fields;
+        $this->hide_default_fields = $hide_default_fields;
+
 
         add_action('init', [$this, 'register_cpt']);
         add_action('cmb2_admin_init', [$this, 'register_metaboxes']);
@@ -71,36 +74,39 @@ abstract class Base_CPT
     {
         $prefix = $this->post_type . '_';
 
-        $cmb = new_cmb2_box(array(
-            'id'            => $prefix . 'metabox',
-            'title'         => __($this->labels['name'] . ' Details', 'rrze-designsystem'),
-            'object_types'  => array($this->post_type),
-        ));
+            $cmb = new_cmb2_box(array(
+                'id'            => $prefix . 'metabox',
+                'title'         => __($this->labels['name'] . ' Details', 'rrze-designsystem'),
+                'object_types'  => array($this->post_type),
+            ));
 
-        // Common Fields
-        $cmb->add_field(array(
-            'name' => __('Token Name', 'rrze-designsystem'),
-            'desc' => __('Enter the token name', 'rrze-designsystem'),
-            'id'   => $prefix . 'token_name',
-            'type' => 'text',
-            'sanitization_cb' => 'sanitize_text_field',
-        ));
+            if (!$this->hide_default_fields) {
 
-        $cmb->add_field(array(
-            'name' => __('Value', 'rrze-designsystem'),
-            'desc' => __('Enter the value', 'rrze-designsystem'),
-            'id'   => $prefix . 'value',
-            'type' => 'text',
-            'sanitization_cb' => 'sanitize_css_value',
-        ));
+            // Common Fields
+            $cmb->add_field(array(
+                'name' => __('Token Name', 'rrze-designsystem'),
+                'desc' => __('Enter the token name', 'rrze-designsystem'),
+                'id'   => $prefix . 'token_name',
+                'type' => 'text',
+                'sanitization_cb' => 'sanitize_text_field',
+            ));
 
-        $cmb->add_field(array(
-            'name' => __('Use Case', 'rrze-designsystem'),
-            'desc' => __('Enter the use case', 'rrze-designsystem'),
-            'id'   => $prefix . 'use_case',
-            'type' => 'text',
-            'sanitization_cb' => 'sanitize_text_field',
-        ));
+            $cmb->add_field(array(
+                'name' => __('Value', 'rrze-designsystem'),
+                'desc' => __('Enter the value', 'rrze-designsystem'),
+                'id'   => $prefix . 'value',
+                'type' => 'text',
+                'sanitization_cb' => 'sanitize_css_value',
+            ));
+
+            $cmb->add_field(array(
+                'name' => __('Use Case', 'rrze-designsystem'),
+                'desc' => __('Enter the use case', 'rrze-designsystem'),
+                'id'   => $prefix . 'use_case',
+                'type' => 'text',
+                'sanitization_cb' => 'sanitize_text_field',
+            ));
+        }
 
         // Individual Fields
         foreach ($this->fields as $field) {
