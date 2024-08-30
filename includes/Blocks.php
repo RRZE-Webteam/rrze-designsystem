@@ -10,7 +10,7 @@ class Blocks
 {
     public function __construct()
     {
-        add_action('init', [$this, 'rrze_rrze_block_init']);
+        // add_action('init', [$this, 'rrze_rrze_block_init']);
     }
 
     /**

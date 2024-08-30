@@ -111,9 +111,7 @@ class Main
 
     private function init_hooks()
     {
-        error_log('Initializing hooks...');
         new Elements_CPT();
-
         new Opacity_CPT();
         new Opacity_REST_API();
         new BoxShadow_CPT();
