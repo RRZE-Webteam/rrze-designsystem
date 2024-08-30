@@ -66,57 +66,86 @@ class Elements_CPT extends Base_CPT
                 'name' => __('Overview', 'rrze-designsystem'),
                 'id'   => $prefix . 'overview',
                 'type' => 'wysiwyg',
+                'desc' => __('Provide a brief overview of the element. For example a screenshot of what to expect.', 'rrze-designsystem'),
             ],
             [
                 'name' => __('Sample Element', 'rrze-designsystem'),
                 'id'   => $prefix . 'sample_element',
                 'type' => 'wysiwyg',
+                'desc' => __('Provide a live-demo of the element via a shortcode if it exists.', 'rrze-designsystem'),
             ],
             [
                 'name' => __('When to Use', 'rrze-designsystem'),
                 'id'   => $prefix . 'when_to_use',
                 'type' => 'wysiwyg',
+                'desc' => __('Describe when to use this element. Using list elements is recommended.', 'rrze-designsystem'),
             ],
             [
-                'name' => __('Related Elements', 'rrze-designsystem'),
-                'id'   => $prefix . 'related_elements',
-                'type' => 'text_url',
-                'repeatable' => true, // Allows up to 3 link fields
-                'limit' => 3,
+                'name'       => __('Related Elements', 'rrze-designsystem'),
+                'id'         => $prefix . 'related_elements',
+                'type'       => 'group',
+                'repeatable' => true,
+                'options'    => [
+                    'group_title'   => __('Related Element {#}', 'rrze-designsystem'),
+                    'add_button'    => __('Add Related Element', 'rrze-designsystem'),
+                    'remove_button' => __('Remove Related Element', 'rrze-designsystem'),
+                    'sortable'      => true,
+                ],
+                'fields'     => [
+                    [
+                        'name' => __('Link Text', 'rrze-designsystem'),
+                        'id'   => 'link_text',
+                        'type' => 'text',
+                        'desc' => __('Enter the display text for the link.', 'rrze-designsystem'),
+                    ],
+                    [
+                        'name' => __('URL', 'rrze-designsystem'),
+                        'id'   => 'link_url',
+                        'type' => 'text_url',
+                        'desc' => __('Enter the URL for the link.', 'rrze-designsystem'),
+                    ],
+                ],
+                'desc'       => __('Add related elements or patterns that are connected to this element. You can add multiple links.', 'rrze-designsystem'),
             ],
             // Section Style Fields
             [
-                'name' => __('Brief', 'rrze-designsystem'),
+                'name' => __('Design Brief overview', 'rrze-designsystem'),
                 'id'   => $prefix . 'brief',
                 'type' => 'wysiwyg',
+                'desc' => __('Provide a design brief of the element.', 'rrze-designsystem'),
             ],
             [
                 'name' => __('Anatomy', 'rrze-designsystem'),
                 'id'   => $prefix . 'anatomy',
                 'type' => 'wysiwyg',
+                'desc' => __('Provide a visual representation of the element with annotations. Follow technical documentation best practices.', 'rrze-designsystem'),
             ],
             [
                 'name' => __('Style', 'rrze-designsystem'),
                 'id'   => $prefix . 'style',
                 'type' => 'wysiwyg',
+                'desc' => __('Provide the style guide for the element. Include typography, color, and spacing.', 'rrze-designsystem'),
             ],
             // Section Guidelines Field
             [
-                'name' => __('Guidelines', 'rrze-designsystem'),
+                'name' => __('Guidelines – Usage', 'rrze-designsystem'),
                 'id'   => $prefix . 'guidelines',
                 'type' => 'wysiwyg',
+                'desc' => __('Provide guidelines for using the element. Include best practices and examples.', 'rrze-designsystem'),
             ],
             // Section Code Field
             [
                 'name' => __('Code', 'rrze-designsystem'),
                 'id'   => $prefix . 'code',
                 'type' => 'wysiwyg',
+                'desc' => __('Provide the code snippet for the element. Include HTML, SCSS, and JavaScript.', 'rrze-designsystem'),
             ],
             // Section Accessibility Field
             [
                 'name' => __('Accessibility', 'rrze-designsystem'),
                 'id'   => $prefix . 'accessibility',
                 'type' => 'wysiwyg',
+                'desc' => __('Provide accessibility information for the element. Include ARIA roles, keyboard navigation, and screen reader support.', 'rrze-designsystem'),
             ],
         ];
     }
