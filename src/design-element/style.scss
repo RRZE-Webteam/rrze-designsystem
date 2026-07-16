@@ -1,0 +1,20 @@
+.rrze-designsystem-element {
+
+	.rrze-designsystem-element__title {
+		margin-block-end: 1.5rem;
+	}
+
+	.elements-content > div + div {
+		margin-block-start: 2rem;
+	}
+
+	.related-elements {
+		padding-inline-start: 1.25rem;
+	}
+
+	&.is-empty {
+		padding: 1rem;
+		border: 1px dashed #8c8f94;
+		color: #50575e;
+	}
+}

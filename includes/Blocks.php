@@ -1,48 +1,234 @@
 <?php
 
 namespace RRZE\Designsystem;
+
 defined('ABSPATH') || exit;
 
+use RRZE\Designsystem\Tokens\Base\CPT_Table_Generator;
+
 /**
- * The Blocks class initializes the blocks and sets up localization.
+ * Registers the native editor blocks supplied by the plugin.
  */
 class Blocks
 {
+    /**
+     * Token types that can be rendered by the token table block.
+     *
+     * @var array<string, array<string, mixed>>
+     */
+    private const TOKEN_TYPES = [
+        'color' => [
+            'class' => 'rrze-designsystem-colors',
+            'sample' => '',
+        ],
+        'font' => [
+            'class' => 'rrze-designsystem-fonts',
+            'sample' => 'Aa',
+        ],
+        'space' => [
+            'class' => 'rrze-designsystem-spaces',
+            'sample' => '',
+        ],
+        'boxshadow' => [
+            'class' => 'rrze-designsystem-boxshadows',
+            'sample' => '',
+        ],
+        'opacity' => [
+            'class' => 'rrze-designsystem-opacitys',
+            'sample' => '',
+        ],
+        'length' => [
+            'class' => 'rrze-designsystem-lengths',
+            'sample' => '',
+        ],
+        'breakpoint' => [
+            'class' => 'rrze-designsystem-breakpoints',
+            'sample' => '',
+        ],
+        'mediaquery' => [
+            'class' => 'rrze-designsystem-mediaqueries',
+            'sample' => '',
+        ],
+        'border' => [
+            'class' => 'rrze-designsystem-borders',
+            'sample' => '',
+        ],
+        'icon' => [
+            'class' => 'rrze-designsystem-icons',
+            'sample' => '',
+        ],
+    ];
+
     public function __construct()
     {
-        // add_action('init', [$this, 'rrze_rrze_block_init']);
+        add_action('init', [$this, 'register_blocks']);
+        add_filter('block_categories_all', [$this, 'register_block_category']);
     }
 
     /**
-     * Initializes the block registration and sets up localization.
+     * Adds an RRZE-specific group to the block inserter.
+     *
+     * @param array<int, array<string, string>> $categories Existing categories.
+     * @return array<int, array<string, string>>
      */
-    public function rrze_rrze_block_init()
+    public function register_block_category(array $categories): array
     {
-            $this->rrze_register_blocks_and_translations();
-            // Additional logic for blocks with custom render callbacks below this line.
-    }
-
-    /**
-     * Registers blocks and localizations.
-     */
-    private function rrze_register_blocks_and_translations()
-    {
-        // Array with the names of the blocks to be registered.
-        $blocks = [
-            'exampleblock'
-        ];
-
-        foreach ($blocks as $block) {
-            register_block_type(plugin_dir_path(__DIR__) . 'build/' . $block);
-
-            load_plugin_textdomain('rrze-designsystem', false, dirname(plugin_basename(__DIR__)) . 'languages');
-
-            $script_handle = generate_block_asset_handle('rrze-designsystem/' . $block, 'editorScript');
-            wp_set_script_translations($script_handle, 'rrze-designsystem', plugin_dir_path(__DIR__) . 'languages');
+        foreach ($categories as $category) {
+            if (($category['slug'] ?? '') === 'rrze-designsystem') {
+                return $categories;
+            }
         }
 
-        // Enqueue previously registered global styles and scripts here.
-        // wp_enqueue_style('fontawesome');
-        // wp_enqueue_style('rrze-elements-blocks');
+        array_unshift($categories, [
+            'slug' => 'rrze-designsystem',
+            'title' => __('RRZE Design System', 'rrze-designsystem'),
+            'icon' => null,
+        ]);
+
+        return $categories;
+    }
+
+    /**
+     * Registers all built block metadata and their server-side renderers.
+     */
+    public function register_blocks(): void
+    {
+        $blocks = [
+            'token-table' => [$this, 'render_token_table'],
+            'design-element' => [$this, 'render_design_element'],
+        ];
+
+        foreach ($blocks as $directory => $render_callback) {
+            $path = dirname(__DIR__) . '/build/' . $directory;
+
+            if (!file_exists($path . '/block.json')) {
+                continue;
+            }
+
+            register_block_type($path, [
+                'render_callback' => $render_callback,
+            ]);
+
+            $script_handle = generate_block_asset_handle(
+                'rrze-designsystem/' . $directory,
+                'editorScript'
+            );
+            wp_set_script_translations(
+                $script_handle,
+                'rrze-designsystem',
+                dirname(__DIR__) . '/languages'
+            );
+        }
+    }
+
+    /**
+     * Renders a token table from the current token CPT records.
+     *
+     * @param array<string, mixed> $attributes Block attributes.
+     */
+    public function render_token_table(array $attributes): string
+    {
+        $token_type = sanitize_key($attributes['tokenType'] ?? 'color');
+
+        if (!isset(self::TOKEN_TYPES[$token_type])) {
+            $token_type = 'color';
+        }
+
+        $config = self::TOKEN_TYPES[$token_type];
+        $fields = [
+            ['name' => 'token_name', 'label' => __('Token name', 'rrze-designsystem')],
+            ['name' => 'value', 'label' => __('Value', 'rrze-designsystem')],
+            ['name' => 'use_case', 'label' => __('Use case', 'rrze-designsystem')],
+        ];
+
+        $table_generator = new CPT_Table_Generator(
+            $token_type,
+            $token_type . '/v1',
+            'data',
+            $fields,
+            [$config['class']],
+            $config['sample']
+        );
+
+        $categories = array_filter(array_map(
+            'sanitize_title',
+            is_array($attributes['categories'] ?? null) ? $attributes['categories'] : []
+        ));
+
+        if ($categories) {
+            $table_generator->set_categories($categories);
+        }
+
+        $table_generator->set_show_copy(!empty($attributes['showCopy']));
+
+        $heading = '';
+        if (!empty($attributes['showHeading']) && !empty($attributes['heading'])) {
+            $heading_level = min(6, max(2, absint($attributes['headingLevel'] ?? 2)));
+            $heading = sprintf(
+                '<h%1$d>%2$s</h%1$d>',
+                $heading_level,
+                esc_html($attributes['heading'])
+            );
+        }
+
+        $wrapper_attributes = get_block_wrapper_attributes([
+            'class' => 'rrze-designsystem-token-table' . (!empty($attributes['compact']) ? ' is-compact' : ''),
+            'data-token-type' => $token_type,
+        ]);
+
+        return sprintf(
+            '<div %1$s>%2$s%3$s</div>',
+            $wrapper_attributes,
+            $heading,
+            $table_generator->generate_table()
+        );
+    }
+
+    /**
+     * Renders one of the sections stored on a design element record.
+     *
+     * @param array<string, mixed> $attributes Block attributes.
+     */
+    public function render_design_element(array $attributes): string
+    {
+        $element_id = absint($attributes['elementId'] ?? 0);
+        $element = $element_id ? get_post($element_id) : null;
+
+        if (!$element || $element->post_type !== 'elements') {
+            return sprintf(
+                '<div %1$s><p>%2$s</p></div>',
+                get_block_wrapper_attributes(['class' => 'rrze-designsystem-element is-empty']),
+                esc_html__('Choose a design element in the block settings.', 'rrze-designsystem')
+            );
+        }
+
+        $allowed_sections = ['', 'overview', 'style', 'guidelines', 'code', 'accessibility'];
+        $section = sanitize_key($attributes['section'] ?? '');
+        if (!in_array($section, $allowed_sections, true)) {
+            $section = '';
+        }
+
+        $heading = '';
+        if (!empty($attributes['showTitle'])) {
+            $heading_level = min(6, max(2, absint($attributes['headingLevel'] ?? 2)));
+            $heading = sprintf(
+                '<h%1$d class="rrze-designsystem-element__title">%2$s</h%1$d>',
+                $heading_level,
+                esc_html(get_the_title($element))
+            );
+        }
+
+        $shortcode = sprintf(
+            '[Designelement element="%d" section="%s"]',
+            $element_id,
+            esc_attr($section)
+        );
+
+        return sprintf(
+            '<article %1$s>%2$s%3$s</article>',
+            get_block_wrapper_attributes(['class' => 'rrze-designsystem-element']),
+            $heading,
+            do_shortcode($shortcode)
+        );
     }
 }

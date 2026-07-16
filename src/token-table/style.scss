@@ -1,0 +1,127 @@
+.rrze-designsystem-token-table {
+	overflow-x: auto;
+
+	table.rrze-designsystem {
+		width: 100%;
+		border-collapse: collapse;
+	}
+
+	th,
+	td {
+		padding: 0.75rem;
+		border-bottom: 1px solid #dcdcde;
+		text-align: left;
+		vertical-align: middle;
+	}
+
+	thead th {
+		background: #04316a;
+		color: #fff;
+	}
+
+	samp {
+		box-sizing: border-box;
+	}
+
+	svg {
+		width: 1.5rem;
+		height: 1.5rem;
+	}
+
+	rrze-copy-button,
+	td code {
+		cursor: pointer;
+	}
+
+	&.is-compact {
+
+		th,
+		td {
+			padding: 0.35rem 0.5rem;
+		}
+	}
+}
+
+.rrze-designsystem-colors samp {
+	display: inline-block;
+	width: 2rem;
+	height: 2rem;
+	border: 1px solid #000;
+	border-radius: 50%;
+	background-color: var(--samp-color);
+}
+
+.rrze-designsystem-fonts samp {
+	font-size: var(--samp-color);
+}
+
+.rrze-designsystem-spaces samp,
+.rrze-designsystem-icons samp {
+	display: inline-block;
+	width: var(--samp-color);
+	height: var(--samp-color);
+	min-width: 2px;
+	min-height: 2px;
+	border: 1px dashed #04316a;
+	background: #dcdcde;
+}
+
+.rrze-designsystem-boxshadows samp {
+	display: inline-block;
+	width: 2rem;
+	height: 2rem;
+	border-radius: 4px;
+	box-shadow: var(--samp-color);
+}
+
+.rrze-designsystem-opacitys samp {
+	display: inline-block;
+	width: 2rem;
+	height: 2rem;
+	background: #000;
+	opacity: var(--samp-color);
+}
+
+.rrze-designsystem-lengths samp {
+	display: inline-block;
+	width: var(--samp-color);
+	min-width: 2px;
+	height: 2rem;
+	border-bottom: 2px solid #151515;
+}
+
+.rrze-designsystem-borders samp {
+	display: inline-block;
+	width: 4rem;
+	height: 2rem;
+	border: var(--samp-color) solid #151515;
+	border-radius: 4px;
+}
+
+.copy-container {
+	position: relative;
+	display: inline-block;
+}
+
+[data-tooltip]::after {
+	position: absolute;
+	bottom: 125%;
+	left: 50%;
+	z-index: 1;
+	padding: 0.3rem 0.5rem;
+	border-radius: 3px;
+	background: #1e1e1e;
+	color: #fff;
+	content: attr(data-tooltip);
+	font-size: 0.75rem;
+	opacity: 0;
+	pointer-events: none;
+	transform: translateX(-50%);
+	transition: opacity 0.15s;
+	white-space: nowrap;
+}
+
+[data-tooltip]:hover::after,
+[data-tooltip]:focus::after {
+	opacity: 1;
+}

@@ -1,0 +1,41 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "rrze-designsystem/design-element",
+	"version": "1.0.0",
+	"title": "Design Element",
+	"category": "rrze-designsystem",
+	"description": "Displays documentation for an RRZE design element.",
+	"keywords": [ "design system", "component", "documentation" ],
+	"attributes": {
+		"elementId": {
+			"type": "number",
+			"default": 0
+		},
+		"section": {
+			"type": "string",
+			"default": ""
+		},
+		"showTitle": {
+			"type": "boolean",
+			"default": true
+		},
+		"headingLevel": {
+			"type": "number",
+			"default": 2
+		}
+	},
+	"supports": {
+		"align": [ "wide", "full" ],
+		"anchor": true,
+		"html": false,
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+	"textdomain": "rrze-designsystem",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

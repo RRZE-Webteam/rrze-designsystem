@@ -20,6 +20,15 @@ Das Plugin unterstüztt die Folgenden Shortcodes:
 - ```[icon_table category="{$category_name}"]``` - Ausgabe der Icons
 - ```[Designelement element="{$element_id}" section="{$section_name}"]``` - Ausgabe von Designelementen. ```$element_id```: Die ID des Element-Eintrags.
 
+## Blöcke
+
+Im Block-Editor steht die eigene Kategorie **RRZE Design System** zur Verfügung. Sie enthält:
+
+- Token-Tabellen für Farben, Schriften, Abstände, Schatten, Deckkraft, Längen, Breakpoints, Media Queries, Rahmen und Icons
+- den Block **Design Element** zur Ausgabe eines vollständigen Elements oder eines einzelnen Dokumentationsabschnitts
+
+Die Blöcke werden serverseitig gerendert und zeigen daher immer den aktuellen Stand der zugehörigen Design-Token- und Element-Einträge. Block-Werkzeugleiste und Seitenleiste bieten Einstellungen für Typ, Kategorie, Überschrift, Darstellung und Abschnitt.
+
 ## Entwicklung
 Tipps zur Entwicklung finden sich unter /docs
 
