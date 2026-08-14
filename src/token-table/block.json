@@ -38,6 +38,25 @@
 		"compact": {
 			"type": "boolean",
 			"default": false
+		},
+		"displayedFields": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			},
+			"default": [ "token_name", "value", "use_case" ]
+		},
+		"swatchSize": {
+			"type": "number",
+			"default": 32
+		},
+		"swatchBorderRadius": {
+			"type": "number",
+			"default": 50
+		},
+		"colorLayout": {
+			"type": "string",
+			"default": "table"
 		}
 	},
 	"supports": {

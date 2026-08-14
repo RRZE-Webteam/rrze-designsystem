@@ -201,6 +201,20 @@ class CPT_Table_Generator
                     'value'      => get_post_meta(get_the_ID(), $this->post_type . '_value', true),
                     'use_case'   => get_post_meta(get_the_ID(), $this->post_type . '_use_case', true),
                 ];
+
+                $result_index = array_key_last($results);
+                foreach ($this->fields as $field) {
+                    $field_name = $field['name'] ?? '';
+                    if (!$field_name || array_key_exists($field_name, $results[$result_index])) {
+                        continue;
+                    }
+
+                    $results[$result_index][$field_name] = get_post_meta(
+                        get_the_ID(),
+                        $this->post_type . '_' . $field_name,
+                        true
+                    );
+                }
             }
             wp_reset_postdata();
         }

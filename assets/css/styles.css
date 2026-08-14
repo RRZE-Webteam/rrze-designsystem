@@ -1,9 +1,9 @@
 table.rrze-designsystem.rrze-designsystem-colors samp{
     border: 1px solid #000;
     display: inline-block;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 100%;
+    width: var(--rrze-color-swatch-size, 2rem);
+    height: var(--rrze-color-swatch-size, 2rem);
+    border-radius: var(--rrze-color-swatch-radius, 50%);
 }
 
 table.rrze-designsystem svg{
@@ -58,16 +58,20 @@ table.rrze-designsystem td[data-label="Copy"]{
     width: 3rem;
 }
 
-table.rrze-designsystem tr:hover, table.rrze-designsystem tr:nth-child(odd):hover td, table.rrze-designsystem tr:hover td{
-    background: #04316a !important;
+table.rrze-designsystem tbody tr:hover td,
+table.rrze-designsystem tbody tr:focus-within td{
+    background-color: #04316a !important;
     color: #fff !important;
 }
 
-table.rrze-designsystem tr:hover code {
+table.rrze-designsystem tbody tr:hover code,
+table.rrze-designsystem tbody tr:focus-within code {
     background-color: #fff;
+    color: #151515;
 }
 
-table.rrze-designsystem tr:hover svg {
+table.rrze-designsystem tbody tr:hover svg,
+table.rrze-designsystem tbody tr:focus-within svg {
     fill: #fff;
 }
 

@@ -15,4 +15,9 @@ class Color_REST_API extends Base_REST_API
     {
         return 'color_category';
     }
+
+    protected function get_additional_fields()
+    {
+        return ['pantone', 'cmyk', 'rgb', 'ral'];
+    }
 }

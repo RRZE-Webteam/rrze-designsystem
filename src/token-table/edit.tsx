@@ -6,6 +6,7 @@ import {
 import {
 	CheckboxControl,
 	PanelBody,
+	RangeControl,
 	SelectControl,
 	TextControl,
 	ToggleControl,
@@ -34,12 +35,26 @@ type Attributes = {
 	headingLevel: number;
 	showCopy: boolean;
 	compact: boolean;
+	displayedFields: string[];
+	swatchSize: number;
+	swatchBorderRadius: number;
+	colorLayout: string;
 };
 
 type EditProps = {
 	attributes: Attributes;
 	setAttributes: ( attributes: Partial< Attributes > ) => void;
 };
+
+const colorFields = [
+	{ value: 'token_name', label: __( 'Token name', 'rrze-designsystem' ) },
+	{ value: 'value', label: __( 'Value', 'rrze-designsystem' ) },
+	{ value: 'use_case', label: __( 'Use case', 'rrze-designsystem' ) },
+	{ value: 'pantone', label: __( 'Pantone', 'rrze-designsystem' ) },
+	{ value: 'cmyk', label: __( 'CMYK', 'rrze-designsystem' ) },
+	{ value: 'rgb', label: __( 'RGB', 'rrze-designsystem' ) },
+	{ value: 'ral', label: __( 'RAL', 'rrze-designsystem' ) },
+];
 
 export default function Edit( { attributes, setAttributes }: EditProps ) {
 	const blockProps = useBlockProps( {
@@ -71,6 +86,17 @@ export default function Edit( { attributes, setAttributes }: EditProps ) {
 			? [ ...attributes.categories, slug ]
 			: attributes.categories.filter( ( category ) => category !== slug );
 		setAttributes( { categories: Array.from( new Set( categories ) ) } );
+	};
+
+	const toggleDisplayedField = ( field: string, displayed: boolean ) => {
+		const displayedFields = displayed
+			? [ ...attributes.displayedFields, field ]
+			: attributes.displayedFields.filter(
+					( displayedField ) => displayedField !== field
+			  );
+		setAttributes( {
+			displayedFields: Array.from( new Set( displayedFields ) ),
+		} );
 	};
 
 	return (
@@ -167,6 +193,84 @@ export default function Edit( { attributes, setAttributes }: EditProps ) {
 						onChange={ ( compact ) => setAttributes( { compact } ) }
 					/>
 				</PanelBody>
+
+				{ currentType.value === 'color' && (
+					<PanelBody
+						title={ __( 'Color display', 'rrze-designsystem' ) }
+						initialOpen={ true }
+					>
+						<SelectControl
+							label={ __( 'Layout', 'rrze-designsystem' ) }
+							value={ attributes.colorLayout }
+							options={ [
+								{
+									label: __( 'Table', 'rrze-designsystem' ),
+									value: 'table',
+								},
+								{
+									label: __(
+										'Color tiles',
+										'rrze-designsystem'
+									),
+									value: 'tiles',
+								},
+							] }
+							onChange={ ( colorLayout ) =>
+								setAttributes( { colorLayout } )
+							}
+						/>
+						<p>
+							{ __(
+								'Select the information shown for each color.',
+								'rrze-designsystem'
+							) }
+						</p>
+						{ colorFields.map( ( field ) => (
+							<CheckboxControl
+								key={ field.value }
+								label={ field.label }
+								checked={ attributes.displayedFields.includes(
+									field.value
+								) }
+								onChange={ ( displayed ) =>
+									toggleDisplayedField(
+										field.value,
+										displayed
+									)
+								}
+							/>
+						) ) }
+						<RangeControl
+							label={ __( 'Swatch size', 'rrze-designsystem' ) }
+							help={ __(
+								'Size in pixels.',
+								'rrze-designsystem'
+							) }
+							value={ attributes.swatchSize }
+							min={ 8 }
+							max={ 200 }
+							onChange={ ( swatchSize ) =>
+								setAttributes( { swatchSize } )
+							}
+						/>
+						<RangeControl
+							label={ __(
+								'Swatch border radius',
+								'rrze-designsystem'
+							) }
+							help={ __(
+								'Radius in percent.',
+								'rrze-designsystem'
+							) }
+							value={ attributes.swatchBorderRadius }
+							min={ 0 }
+							max={ 50 }
+							onChange={ ( swatchBorderRadius ) =>
+								setAttributes( { swatchBorderRadius } )
+							}
+						/>
+					</PanelBody>
+				) }
 
 				<PanelBody
 					title={ __( 'Categories', 'rrze-designsystem' ) }

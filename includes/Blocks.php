@@ -12,6 +12,23 @@ use RRZE\Designsystem\Tokens\Base\CPT_Table_Generator;
 class Blocks
 {
     /**
+     * Columns available for Color token tables.
+     *
+     * @var array<string, string>
+     */
+    private const COLOR_FIELDS = [
+        'token_name' => 'Token name',
+        'value' => 'Value',
+        'use_case' => 'Use case',
+        'pantone' => 'Pantone',
+        'cmyk' => 'CMYK',
+        'rgb' => 'RGB',
+        'ral' => 'RAL',
+    ];
+
+    private const DEFAULT_COLOR_FIELDS = ['token_name', 'value', 'use_case'];
+
+    /**
      * Token types that can be rendered by the token table block.
      *
      * @var array<string, array<string, mixed>>
@@ -141,6 +158,23 @@ class Blocks
             ['name' => 'use_case', 'label' => __('Use case', 'rrze-designsystem')],
         ];
 
+        if ($token_type === 'color') {
+            $requested_fields = is_array($attributes['displayedFields'] ?? null)
+                ? $attributes['displayedFields']
+                : self::DEFAULT_COLOR_FIELDS;
+            $requested_fields = array_map('sanitize_key', $requested_fields);
+            $fields = [];
+
+            foreach (self::COLOR_FIELDS as $field_name => $field_label) {
+                if (in_array($field_name, $requested_fields, true)) {
+                    $fields[] = [
+                        'name' => $field_name,
+                        'label' => __($field_label, 'rrze-designsystem'),
+                    ];
+                }
+            }
+        }
+
         $table_generator = new CPT_Table_Generator(
             $token_type,
             $token_type . '/v1',
@@ -171,10 +205,27 @@ class Blocks
             );
         }
 
-        $wrapper_attributes = get_block_wrapper_attributes([
+        $wrapper_options = [
             'class' => 'rrze-designsystem-token-table' . (!empty($attributes['compact']) ? ' is-compact' : ''),
             'data-token-type' => $token_type,
-        ]);
+        ];
+
+        if ($token_type === 'color') {
+            $color_layout = sanitize_key($attributes['colorLayout'] ?? 'table');
+            if ($color_layout === 'tiles') {
+                $wrapper_options['class'] .= ' is-color-tiles';
+            }
+
+            $swatch_size = min(200, max(8, absint($attributes['swatchSize'] ?? 32)));
+            $swatch_radius = min(50, max(0, absint($attributes['swatchBorderRadius'] ?? 50)));
+            $wrapper_options['style'] = sprintf(
+                '--rrze-color-swatch-size:%dpx;--rrze-color-swatch-radius:%d%%;',
+                $swatch_size,
+                $swatch_radius
+            );
+        }
+
+        $wrapper_attributes = get_block_wrapper_attributes($wrapper_options);
 
         return sprintf(
             '<div %1$s>%2$s%3$s</div>',

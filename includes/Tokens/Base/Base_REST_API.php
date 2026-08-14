@@ -84,6 +84,15 @@ abstract class Base_REST_API
                     'use_case'    => get_post_meta(get_the_ID(), $this->post_type . '_use_case', true),
                     'categories'  => $formatted_categories,
                 ];
+
+                $result_index = array_key_last($results);
+                foreach ($this->get_additional_fields() as $field_name) {
+                    $results[$result_index][$field_name] = get_post_meta(
+                        get_the_ID(),
+                        $this->post_type . '_' . $field_name,
+                        true
+                    );
+                }
             }
             wp_reset_postdata();
         }
@@ -101,5 +110,15 @@ abstract class Base_REST_API
     protected function get_taxonomy()
     {
         return $this->post_type . '_category';
+    }
+
+    /**
+     * Returns post-meta suffixes that should be exposed by this endpoint.
+     *
+     * @return array<int, string>
+     */
+    protected function get_additional_fields()
+    {
+        return [];
     }
 }
