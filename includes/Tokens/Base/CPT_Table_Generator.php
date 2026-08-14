@@ -13,6 +13,7 @@ class CPT_Table_Generator
     protected $extra_classes;
     protected $samp_text;
     protected $categories = [];
+    protected $show_copy = true;
 
     public function __construct($post_type, $rest_namespace, $rest_route, $fields, $extra_classes = [], $samp_text = '')
     {
@@ -33,6 +34,14 @@ class CPT_Table_Generator
     public function set_categories($categories)
     {
         $this->categories = $categories;
+    }
+
+    /**
+     * Controls whether the copy column is included in the generated table.
+     */
+    public function set_show_copy(bool $show_copy)
+    {
+        $this->show_copy = $show_copy;
     }
 
     /**
@@ -71,7 +80,9 @@ class CPT_Table_Generator
             $abbr = $field['abbr'] ?? $label;
             $head .= "<th scope='col' data-label='{$label}'><abbr title='{$label}'>{$abbr}</abbr></th>";
         }
-        $head .= '<th scope="col" data-label="Copy"></th>';
+        if ($this->show_copy) {
+            $head .= '<th scope="col" data-label="' . esc_attr__('Copy', 'rrze-designsystem') . '"></th>';
+        }
         $head .= '</tr></thead>';
         return $head;
     }
@@ -96,7 +107,9 @@ class CPT_Table_Generator
                 $value = isset($item[$field_name]) ? esc_html($item[$field_name]) : '';
                 $body .= "<td data-label='{$field['label']}'><code>{$value}</code></td>";
             }
-            $body .= $this->generate_copy_buttons($item);
+            if ($this->show_copy) {
+                $body .= $this->generate_copy_buttons($item);
+            }
             $body .= '</tr>';
         }
         $body .= '</tbody>';
@@ -188,6 +201,20 @@ class CPT_Table_Generator
                     'value'      => get_post_meta(get_the_ID(), $this->post_type . '_value', true),
                     'use_case'   => get_post_meta(get_the_ID(), $this->post_type . '_use_case', true),
                 ];
+
+                $result_index = array_key_last($results);
+                foreach ($this->fields as $field) {
+                    $field_name = $field['name'] ?? '';
+                    if (!$field_name || array_key_exists($field_name, $results[$result_index])) {
+                        continue;
+                    }
+
+                    $results[$result_index][$field_name] = get_post_meta(
+                        get_the_ID(),
+                        $this->post_type . '_' . $field_name,
+                        true
+                    );
+                }
             }
             wp_reset_postdata();
         }

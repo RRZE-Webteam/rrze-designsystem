@@ -32,6 +32,34 @@ class Color_CPT extends Base_CPT
         ];
 
         $fields = [
+            [
+                'name' => __('Pantone', 'rrze-designsystem'),
+                'desc' => __('Enter the Pantone color reference.', 'rrze-designsystem'),
+                'id'   => 'color_pantone',
+                'type' => 'text',
+                'sanitization_cb' => 'sanitize_text_field',
+            ],
+            [
+                'name' => __('CMYK', 'rrze-designsystem'),
+                'desc' => __('Enter the CMYK color values.', 'rrze-designsystem'),
+                'id'   => 'color_cmyk',
+                'type' => 'text',
+                'sanitization_cb' => 'sanitize_text_field',
+            ],
+            [
+                'name' => __('RGB', 'rrze-designsystem'),
+                'desc' => __('Enter the RGB color values.', 'rrze-designsystem'),
+                'id'   => 'color_rgb',
+                'type' => 'text',
+                'sanitization_cb' => 'sanitize_text_field',
+            ],
+            [
+                'name' => __('RAL', 'rrze-designsystem'),
+                'desc' => __('Enter the RAL color reference.', 'rrze-designsystem'),
+                'id'   => 'color_ral',
+                'type' => 'text',
+                'sanitization_cb' => 'sanitize_text_field',
+            ],
         ];
 
         parent::__construct('color', $labels, $args, $fields);

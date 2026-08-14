@@ -1,0 +1,238 @@
+.rrze-designsystem-token-table {
+	overflow-x: auto;
+
+	table.rrze-designsystem {
+		width: 100%;
+		border-collapse: collapse;
+	}
+
+	th,
+	td {
+		padding: 0.75rem;
+		border-bottom: 1px solid #dcdcde;
+		text-align: left;
+		vertical-align: middle;
+	}
+
+	thead th {
+		background: #04316a;
+		color: #fff;
+	}
+
+	samp {
+		box-sizing: border-box;
+	}
+
+	svg {
+		width: 1.5rem;
+		height: 1.5rem;
+	}
+
+	rrze-copy-button,
+	td code {
+		cursor: pointer;
+	}
+
+	&.is-compact {
+
+		th,
+		td {
+			padding: 0.35rem 0.5rem;
+		}
+	}
+
+	&.is-color-tiles {
+		border: 0;
+		border-radius: 0;
+		box-shadow: none;
+		overflow: visible;
+
+		table.rrze-designsystem-colors {
+			display: block;
+			margin: 0;
+			border: 0;
+			border-radius: 0;
+			background: transparent;
+			box-shadow: none;
+		}
+
+		thead {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			padding: 0;
+			border: 0;
+			clip: rect(0 0 0 0);
+			clip-path: inset(50%);
+			overflow: hidden;
+			white-space: nowrap;
+		}
+
+		tbody {
+			display: flex;
+			gap: 1rem;
+			border: 0;
+			background: transparent;
+			flex-wrap: wrap;
+		}
+
+		tbody tr {
+			display: flex;
+			min-width: 0;
+			border: 0;
+			border-radius: 0;
+			background: #f3f5f7;
+			box-shadow: 0 1px 3px rgb(21 21 21 / 10%);
+			color: #151515;
+			flex: 1 1 12rem;
+			flex-direction: column;
+			transition: box-shadow 0.2s ease, transform 0.2s ease;
+		}
+
+		tbody td {
+			display: block;
+			padding: 0.35rem 0.75rem;
+			border: 0;
+			background: transparent !important;
+			color: inherit !important;
+			font-size: 1rem;
+			line-height: 1.4;
+		}
+
+		tbody td.example {
+			padding: 0.75rem 0.75rem 0.4rem;
+			line-height: 0;
+		}
+
+		tbody td.example > * {
+			display: block;
+			width: 100%;
+			height: var(--rrze-color-swatch-size, 2rem);
+		}
+
+		tbody td:not(.example):not([data-label="Copy"])::before {
+			content: attr(data-label) ": ";
+			font-weight: 600;
+		}
+
+		tbody td[data-label="Copy"] {
+			width: auto;
+			margin-top: auto;
+			padding-top: 0.75rem;
+		}
+
+		tbody code {
+			background: transparent;
+			color: inherit;
+			font-size: inherit;
+			line-height: inherit;
+		}
+
+		tbody tr:hover,
+		tbody tr:focus-within {
+			box-shadow: 0 6px 18px rgb(21 21 21 / 16%);
+			transform: translateY(-2px);
+		}
+
+		tbody tr:hover td,
+		tbody tr:focus-within td {
+			background: transparent !important;
+			color: #151515 !important;
+		}
+
+		tbody tr:hover code,
+		tbody tr:focus-within code {
+			background: transparent;
+			color: inherit;
+		}
+
+		tbody tr:hover svg,
+		tbody tr:focus-within svg {
+			fill: currentcolor;
+		}
+	}
+}
+
+.rrze-designsystem-colors samp {
+	display: inline-block;
+	width: var(--rrze-color-swatch-size, 2rem);
+	height: var(--rrze-color-swatch-size, 2rem);
+	border: 1px solid #000;
+	border-radius: var(--rrze-color-swatch-radius, 50%);
+	background-color: var(--samp-color);
+}
+
+.rrze-designsystem-fonts samp {
+	font-size: var(--samp-color);
+}
+
+.rrze-designsystem-spaces samp,
+.rrze-designsystem-icons samp {
+	display: inline-block;
+	width: var(--samp-color);
+	height: var(--samp-color);
+	min-width: 2px;
+	min-height: 2px;
+	border: 1px dashed #04316a;
+	background: #dcdcde;
+}
+
+.rrze-designsystem-boxshadows samp {
+	display: inline-block;
+	width: 2rem;
+	height: 2rem;
+	border-radius: 4px;
+	box-shadow: var(--samp-color);
+}
+
+.rrze-designsystem-opacitys samp {
+	display: inline-block;
+	width: 2rem;
+	height: 2rem;
+	background: #000;
+	opacity: var(--samp-color);
+}
+
+.rrze-designsystem-lengths samp {
+	display: inline-block;
+	width: var(--samp-color);
+	min-width: 2px;
+	height: 2rem;
+	border-bottom: 2px solid #151515;
+}
+
+.rrze-designsystem-borders samp {
+	display: inline-block;
+	width: 4rem;
+	height: 2rem;
+	border: var(--samp-color) solid #151515;
+	border-radius: 4px;
+}
+
+.copy-container {
+	position: relative;
+	display: inline-block;
+}
+
+[data-tooltip]::after {
+	position: absolute;
+	bottom: 125%;
+	left: 50%;
+	z-index: 1;
+	padding: 0.3rem 0.5rem;
+	border-radius: 3px;
+	background: #1e1e1e;
+	color: #fff;
+	content: attr(data-tooltip);
+	font-size: 0.75rem;
+	opacity: 0;
+	pointer-events: none;
+	transform: translateX(-50%);
+	transition: opacity 0.15s;
+	white-space: nowrap;
+}
+
+[data-tooltip]:hover::after,
+[data-tooltip]:focus::after {
+	opacity: 1;
+}

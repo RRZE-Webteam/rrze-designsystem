@@ -39,6 +39,8 @@ const version = packageJson.version;
 const filesToUpdate = [
   "./rrze-designsystem.php",
   "./src/exampleblock/block.json",
+  "./src/token-table/block.json",
+  "./src/design-element/block.json",
 ]; // usw.
 
 filesToUpdate.forEach((filePath) => updateVersion(filePath, version));

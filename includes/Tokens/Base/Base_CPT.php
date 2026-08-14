@@ -161,6 +161,7 @@ abstract class Base_CPT
             'show_admin_column' => true,
             'query_var'         => true,
             'rewrite'           => ['slug' => strtolower($this->labels['name']) . '-category'],
+            'show_in_rest'      => true,
         ];
 
         register_taxonomy(strtolower($this->labels['name']) . '_category', [$this->post_type], $args);
